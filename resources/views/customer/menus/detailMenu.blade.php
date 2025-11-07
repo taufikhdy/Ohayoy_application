@@ -4,6 +4,15 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="message success" id="message">{{ session('success') }}</div>
+    @endif
+
+    {{-- @if (request('msg') === 'success')
+        <div class="message-success">
+            Menu berhasil ditambahkan ke keranjang, yuk pesan sekarang 🍟🥤
+        </div>
+    @endif --}}
 
     <div class="back-link text-medium">
         <h4><a href="{{ route('customer.menu') }}"><i class="ri-lg ri-arrow-left-long-line"></i> detail menu</a></h4>
@@ -35,9 +44,12 @@
 
         <div class="detail-badge">
             <div class="badge text-center">
+                {{-- <pre>{{ print_r(session()->all(), true) }}</pre> --}}
+
                 <h3><i class="ri-star-fill text-medium star"></i> {{ number_format($menu->rating_avg_nilai, 1) }}</h3>
                 <a href="{{ route('customer.ulasan', $menu->id) }}" class="badge-link">Lihat Ulasan</a>
             </div>
+
         </div>
 
         @if ($menu->status_stok === 'tidak_tersedia')
@@ -49,7 +61,7 @@
                     <div class="flex align-center gap10 w100">
                         <input type="hidden" name="meja_id" id="" value="{{ Auth::guard('meja')->id() }}">
                         <input type="hidden" name="menu_id" id="" value="{{ $menu->id }}">
-                        <input type="number" name="jumlah" id="" placeholder="Jumlah Pesan" value=""
+                        <input type="number" name="jumlah" id="jumlah" placeholder="Jumlah Pesan" value=""
                             required>
 
                         <button type="submit" class="btn-primary w100" onclick="loading()">
@@ -83,7 +95,7 @@
                     <img src="{{ asset('storage/' . $m->foto) }}" alt="" class="object-fit">
                 </div>
 
-                <div class="flex flex-between align-center w100">
+                {{-- <div class="flex flex-between align-center w100">
                     <div class="">
                         <h3 class="title">{{ $m->nama_menu }}</h3>
                         <p class="badge-sm">{{ $m->kategori->nama_kategori }}</p>
@@ -91,6 +103,18 @@
 
                     <h3 class="text-nowrap"><i class="ri-star-fill text-medium star"></i>
                         {{ number_format($m->rating_avg_nilai, 1) }}</h3>
+                </div> --}}
+
+                <div class="w100">
+                    <h3 class="title mb30">{{ $m->nama_menu }}</h3>
+                    <div class="menu-badge w100">
+                        {{-- <div class=""> --}}
+                        <p class="badge-sm">{{ $m->kategori->nama_kategori }}</p>
+                        <h3 class="text-nowrap"><i class="ri-star-fill text-medium star"></i>
+                            {{ number_format($m->rating_avg_nilai, 1) }}</h3>
+                        {{-- </div> --}}
+
+                    </div>
                 </div>
             </a>
         @endforeach

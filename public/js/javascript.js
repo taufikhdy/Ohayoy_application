@@ -1,3 +1,11 @@
+window.onload = function () {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 10);
+};
+
+
+
 function showPassword() {
     const input = document.getElementById('password');
     var icon = document.getElementById('eye');
@@ -63,6 +71,26 @@ editBtn.forEach(editBtn => {
     });
 });
 
+let currentCell = null;
+
+function openModal(textarea) {
+    // currentCell = cell.querySelector('.desc-text');
+    currentCell = textarea;
+    document.getElementById('descInput').value = textarea.value;
+    document.getElementById('modal').style.display = 'inline';
+
+}
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+function saveDesc() {
+    const newDesc = document.getElementById('descInput').value;
+    currentCell.innerText = newDesc;
+    closeModal();
+}
+
 const editKategori = document.querySelectorAll('.editKategori');
 
 editKategori.forEach(editKategori => {
@@ -83,6 +111,13 @@ editKategori.forEach(editKategori => {
     });
 });
 
+setTimeout(() => {
+    const flash = document.getElementById('message');
+    if(flash) {
+        flash.style.opacity = '0';
+        setTimeout(() => flash.remove(), 300)
+    }
+}, 4000);
 
 
 const btnMenu = document.getElementById('menuSwitch');
@@ -99,5 +134,6 @@ btnCate.addEventListener('click', ()=> {
     formMenu.classList.toggle('on');
     formCate.classList.toggle('on');
 })
+
 
 

@@ -4,6 +4,12 @@
 
 @section('content')
 
+    @if (session('success'))
+        <div class="message success" id="message">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="back-link text-medium">
         <h4><a href="{{ route('customer.detailMenu', $menu->id) }}"><i class="ri-lg ri-arrow-left-long-line"></i> ulasan
                 menu</a></h4>
@@ -36,8 +42,8 @@
 
 
     <div class="container-w1 mb40">
-        <h3 class="element-title">Rating <i class="ri-star-fill text-medium star"></i>
-            {{ number_format($menu->rating_avg_nilai, 1) }}</h3>
+        <h2 class="element-title">Rating <i class="ri-star-fill text-medium star"></i>
+            {{ number_format($menu->rating_avg_nilai, 1) }}</h2>
         <div class="box full">
             <form action="{{ route('customer.tambahUlasan') }}" method="post">
                 @csrf
@@ -53,7 +59,8 @@
                     placeholder="Ketik ulasan kamu disini"></textarea>
 
                 <div class="flex flex-end">
-                    <input type="submit" name="" id="" class="btn-primary wmax">
+                    {{-- <input type="submit" name="" id="" class="btn-primary wmax"> --}}
+                    <button type="submit" class="btn-primary wmax" onclick="loading()">kirim ulasan</button>
                 </div>
             </form>
         </div>
@@ -64,7 +71,8 @@
             @foreach ($ulasan as $u)
                 <div class="box full">
                     <div class="flex flex-between">
-                        <h4 class="mb20">{{ $u->username }} ({{ $u->meja->nama_meja }})</h4>
+                        <h4 class="mb20">{{ $u->username }} ({{ $u->meja->nama_meja }}) <i
+                                class="ri-star-fill text-medium star"></i> {{ $u->nilai }}</h4>
                         <p class="text-small">{{ $u->created_at->format('d-m-Y') }}</p>
                     </div>
                     <p>{{ $u->ulasan }}</p>

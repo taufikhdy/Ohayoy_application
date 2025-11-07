@@ -1,4 +1,4 @@
-<nav class="top-navbar">
+<nav class="top-navbar toBottom">
     <div class="flex align-center gap10">
         <div id="btnside">
             <i class="ri-lg ri-menu-fill trigger"></i>
@@ -32,10 +32,15 @@
             <p class="text-small">{{ Auth::guard('meja')->user()->role->nama_role }}</p>
         </div>
 
-        <a href="{{ route('customer.keranjang') }}" class="{{ Request::is('customer/keranjang*') ? 'off' : '' }}" title="Keranjang"><i
-                class="ri-shopping-basket-2-line cart-link"></i></a>
+        @if ($keranjang)
+            <a href="{{ route('customer.keranjang') }}" class="bounce {{ Request::is('customer/keranjang*') ? 'off' : '' }}"
+                title="Keranjang"><i class="ri-shopping-basket-2-line cart-link"></i></a>
+        @elseif($keranjang === 0)
+            <a href="{{ route('customer.keranjang') }}" class="{{ Request::is('customer/keranjang*') ? 'off' : '' }}"
+                title="Keranjang"><i class="ri-shopping-basket-2-line cart-link"></i></a>
+        @endif
 
-        <a href="{{ route('customer.orders') }}" class="off {{ Request::is('customer/keranjang*') ? 'on' : '' }}" title="Pesanan"><i
-                class="ri-receipt-line cart-link"></i></a>
+        <a href="{{ route('customer.orders') }}" class="off {{ Request::is('customer/keranjang*') ? 'on' : '' }}"
+            title="Pesanan"><i class="ri-receipt-line cart-link"></i></a>
     </div>
 </nav>

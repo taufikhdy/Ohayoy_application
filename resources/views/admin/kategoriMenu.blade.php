@@ -29,7 +29,7 @@
                 </form>
             </div>
 
-            <div class="list w-100">
+            <div class="list">
                 @if ($kategoris->isEmpty())
                     <p class="text-center element-title">Tidak ada kategori</p>
                 @else
@@ -39,7 +39,7 @@
                                 @csrf
                                 <input type="hidden" name="kategori_id" id="" value="{{ $kategori->id }}">
                                 <input type="text" name="nama_kategori" value="{{ $kategori->nama_kategori }}" disabled
-                                    class="edit-input w-fit">
+                                    class="edit-input w-100">
                                 <button type="submit" class="hidden" id="submitEdit{{ $kategori->id }}"></button>
 
                                 <div class="flex gap10">

@@ -13,8 +13,10 @@ use App\Models\Meja;
 use App\Models\Keranjang;
 use App\Models\KeranjangItem;
 use App\Models\OrderItem;
+use App\Models\Toko;
 use App\Models\Transaksi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,6 +24,13 @@ class KasirController extends Controller
 {
     protected function kasir()
     {
+        if (Auth::user()?->status === 'offline') {
+            Auth::logout();
+            Session::invalidate();
+            Session::regenerateToken();
+            return redirect()->route('login');
+        }
+
         if (!Auth::check() or Auth::user()?->role_id !== 2) {
             abort(403, 'Akses ditolak');
         }
@@ -135,7 +144,9 @@ class KasirController extends Controller
 
         $order_item = Order::where('meja_id', $mejaId)->with('items.menu')->get()->groupBy('meja_id');
 
-        return view('kasir.struk', compact('transaksi', 'order_item'));
+        $toko = Toko::latest()->first();
+
+        return view('kasir.struk', compact('transaksi', 'order_item', 'toko'));
     }
 
     public function resetOrder(Request $request)
@@ -188,5 +199,14 @@ class KasirController extends Controller
         $menuStatus->save();
 
         return redirect()->route('kasir.menu');
+    }
+
+    public function pengguna()
+    {
+        $this->kasir();
+
+        $id = Auth::user()?->id;
+        $transaksi = Transaksi::where('kasir_id', $id)->count();
+        return view('kasir.pengguna', compact('transaksi'));
     }
 }

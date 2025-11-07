@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jam;
 use App\Models\Meja;
 use App\Models\Keranjang;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -105,19 +106,25 @@ class AuthCustomerController extends Controller
 
         $meja = meja::findOrFail($id);
 
-        Keranjang::where('meja_id', $id)->delete();
+        $orders = Order::where('meja_id', $id)->latest()->first();
+        $keranjangs = Keranjang::where('meja_id', $id);
 
-        $meja->update([
-            'username' => null,
-            'status' => 'kosong'
-        ]);
-        $meja->save();
+        if ($orders) {
+            return redirect()->route('customer.dashboard')->with('error', 'Tidak bisa keluar, kamu sedang memesan menu 😓');
+        } elseif (!$orders) {
 
-        Auth::guard('meja')->logout();
+            $meja->update([
+                'username' => null,
+                'status' => 'kosong'
+            ]);
+            $meja->save();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect()->route('thankyou')
-            ->withSuccess('Logout berhasil!');
+            Auth::guard('meja')->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->route('thankyou')
+                ->withSuccess('Logout berhasil!');
+        }
     }
 }

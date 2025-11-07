@@ -46,7 +46,33 @@
 }
 
 .toTop {
-    animation: toTop .5s;
+    animation: toTop .7s;
+}
+
+.toBottom {
+    animation: toBottom .5s;
+}
+
+.bounce {
+    animation: bounce .5s infinite;
+}
+
+@keyframes bounce {
+    0%{
+        transform: scale(1);
+    }
+
+    30%{
+        transform: scale(1.15) rotate(10deg);
+    }
+
+    60%{
+        transform: scale(1) rotate(-10deg);
+    }
+
+    90%{
+        transform: scale(1.15) rotate(-10deg);
+    }
 }
 
 @keyframes fromRight {
@@ -58,6 +84,7 @@
         transform: translateX(0%);
     }
 }
+
 
 @keyframes fromLeft {
     0%{
@@ -72,6 +99,16 @@
 @keyframes toTop {
     0%{
         transform: translateY(100%);
+    }
+
+    100%{
+        transform: translateY(0%);
+    }
+}
+
+@keyframes toBottom {
+    0%{
+        transform: translateY(-100%);
     }
 
     100%{

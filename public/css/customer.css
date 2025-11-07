@@ -111,6 +111,16 @@ a.on {
     margin-right: 20px;
 }
 
+.top-navbar .bullet{
+    position: absolute;
+    z-index: 8;
+    background-color: crimson;
+    border-radius: 100px;
+    padding: 8px;
+    top: 65%;
+    right: 3%;
+}
+
 .left {
     left: 0;
 }
@@ -156,9 +166,17 @@ section.flex {
 
 footer {
     background-color: var(--primary);
-    height: 400px;
+    /* height: 400px; */
     width: 100%;
-    padding: 20px 40px;
+    padding: 20px;
+}
+
+footer *{
+    color: var(--neutral-100);
+}
+
+.block{
+    display: block;
 }
 
 .flex {
@@ -233,31 +251,31 @@ footer {
     margin-top: 20px;
 }
 
-.mb10{
+.mb10 {
     margin-bottom: 10px;
 }
 
-.mb15{
+.mb15 {
     margin-bottom: 15px;
 }
 
-.mb20{
+.mb20 {
     margin-bottom: 20px;
 }
 
-.mb25{
+.mb25 {
     margin-bottom: 25px;
 }
 
-.mb30{
+.mb30 {
     margin-bottom: 30px;
 }
 
-.mb35{
+.mb35 {
     margin-bottom: 35px;
 }
 
-.mb40{
+.mb40 {
     margin-bottom: 40px;
 }
 
@@ -321,7 +339,7 @@ footer {
     width: 100%;
 }
 
-.wmax{
+.wmax {
     width: max-content;
 }
 
@@ -575,6 +593,12 @@ input[type='submit']:hover{
     row-gap: 30px;
 }
 
+.container-w3{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 20px 40px;
+    row-gap: 30px;
+}
 
 .container-w4 {
     display: grid;
@@ -650,7 +674,7 @@ input[type='submit']:hover{
 
 .menu-box .title {
 
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -662,6 +686,11 @@ input[type='submit']:hover{
     text-overflow: ellipsis;
 }
 
+.menu-box .menu-badge {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .detail-menu {
     display: block;
@@ -740,7 +769,7 @@ input[type='submit']:hover{
     max-height: 400px;
     overflow-y: auto;
     padding: 15px 0px 25px 0px;
-    text-align: justify;
+    /* text-align: justify; */
     line-height: 1.5;
     border-bottom: 1px solid var(--neutral-70);
 }
@@ -802,7 +831,7 @@ input[type='submit']:hover{
         padding: 0px 20px;
     }
 
-    .bottom-button{
+    .bottom-button {
         padding-bottom: 40px;
     }
 
@@ -888,6 +917,11 @@ input[type='submit']:hover{
     }
 
     .container-w2 {
+        grid-template-columns: 100%;
+        padding: 0px 20px;
+    }
+
+    .container-w3 {
         grid-template-columns: 100%;
         padding: 0px 20px;
     }

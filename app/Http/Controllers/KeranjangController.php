@@ -77,6 +77,7 @@ class KeranjangController extends Controller
         }
 
         // return response()->json(['message' => 'Item berhasil ditambahkan ke keranjang']);
-        return redirect()->back();
+        // return redirect()->back();
+        return redirect()->route('customer.detailMenu', ['id' => $request->menu_id])->withSuccess('Menu berhasil ditambahkan ke keranjang, yuk pesan sekarang 🍟🥤');
     }
 }

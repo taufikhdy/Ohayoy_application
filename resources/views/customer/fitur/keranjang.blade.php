@@ -9,7 +9,7 @@
 
         @if (!$items)
             <div class="text-block text-center">
-                <h5>Belum ada menu.</h5>
+                <h5>Belum ada menu yang kamu tambahkan ke keranjang.</h5>
                 <br>
                 <h1> ヾ(≧▽≦*)o </h1>
                 <br>
@@ -28,7 +28,7 @@
 
                                 <div class="flex flex-between align-center w100">
                                     <div class="w100">
-                                        <h3 class="title">{{ $i->menu->nama_menu }}</h3>
+                                        <h3 class="title mb10">{{ $i->menu->nama_menu }}</h3>
                                         <p class="badge-sm">{{ $i->menu->kategori->nama_kategori }}</p>
                                         <h3 class="mt15">Harga {{ 'Rp. ' . number_format($i->menu->harga, 0, ',', '.') }}</h3>
 

@@ -48,18 +48,20 @@
                     </div>
                 @else
                     <table class="p10 table">
-                        <tr>
-                            <th>No</th>
-                            <th>Nomor Struk</th>
-                            <th>Id Meja</th>
-                            <th>Nama Pelanggan</th>
-                            <th>Kode Order</th>
-                            <th>Kasir</th>
-                            <th>Total Bayar</th>
-                            <th>Status</th>
-                            <th>Tanggal</th>
-                            <th>Jam</th>
-                        </tr>
+                        <div class="toptape">
+                            <tr>
+                                <th>No</th>
+                                <th>Nomor Struk</th>
+                                <th>Id Meja</th>
+                                <th>Nama Pelanggan</th>
+                                <th>Kode Order</th>
+                                <th>Kasir</th>
+                                <th>Total Bayar</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Jam</th>
+                            </tr>
+                        </div>
                         @foreach ($data as $d)
                             <tr>
                                 <td>{{ $no++ }}</td>

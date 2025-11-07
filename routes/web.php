@@ -70,6 +70,9 @@ Route::controller(AdminController::class)->group(function () {
     route::get('/admin/pengguna', 'pengguna')->name('admin.pengguna');
     route::post('/admin/pengguna/tambahPengguna', 'tambahPengguna')->name('admin.tambahPengguna');
     route::delete('/admin/pengguna/hapusPengguna/{id}', 'hapusPengguna')->name('admin.hapusPengguna');
+    route::post('/admin/pengguna/pass/{id}', 'regeneratePass')->name('admin.regeneratePass');
+
+    route::get('/admin/toko', 'toko')->name('admin.toko');
 });
 
 
@@ -87,28 +90,31 @@ Route::controller(KasirController::class)->group(function () {
 
     route::get('/kasir/menu', 'menu')->name('kasir.menu');
     route::post('/kasir/menu/status', 'menuStatus')->name('kasir.menu.status');
+
+    route::get('/kasir/pengguna', 'pengguna')->name('kasir.pengguna');
 });
 
 
 
 
 Route::middleware(['web', 'auth:meja'])->group(function () {
-    Route::controller(CustomerController::class)->middleware(['checkMejaStatus'])->group(function () {
-        route::get('/customer/validation', 'usernameForm')->name('customer.form');
-        route::post('/customer/confirm', 'usernameValid')->name('customer.username.valid');
-        route::get('/customer/dashboard', 'dashboard')->name('customer.dashboard');
+    Route::controller(CustomerController::class)->middleware(['checkMejaStatus'])->group(function () { //middleware(['checkMejaStatus'])->
+        Route::get('/customer/validation', 'usernameForm')->name('customer.form');
+        Route::post('/customer/confirm', 'usernameValid')->name('customer.username.valid');
+        Route::get('/customer/dashboard', 'dashboard')->name('customer.dashboard');
 
-        route::get('/customer/menu/detailMenu/{id}', 'detailMenu')->name('customer.detailMenu');
-        route::get('/customer/menu/detailMenu/ulasan/{id}', 'ulasan')->name('customer.ulasan');
-        route::post('/customer/menu/detailMenu/tambahUlasan', 'tambahUlasan')->name('customer.tambahUlasan');
+        Route::get('/customer/menu/detailMenu/{id}', 'detailMenu')->name('customer.detailMenu');
+        Route::get('/customer/menu/detailMenu/ulasan/{id}', 'ulasan')->name('customer.ulasan');
+        Route::post('/customer/menu/detailMenu/tambahUlasan', 'tambahUlasan')->name('customer.tambahUlasan');
 
-        route::get('/customer/menu', 'menu')->name('customer.menu');
-        route::get('/customer/menu/cari_menu', 'cariMenu')->name('customer.cariMenu');
+        Route::get('/customer/menu', 'menu')->name('customer.menu');
+        Route::get('/customer/menu/cari_menu', 'cariMenu')->name('customer.cariMenu');
+        Route::get('/customer/menu/cari_kategori/{kategori}', 'cariKategori')->name('customer.cariKategori');
 
-        route::get('/customer/keranjang', 'keranjang')->name('customer.keranjang');
+        Route::get('/customer/keranjang', 'keranjang')->name('customer.keranjang');
 
-        route::get('/customer/order_menu', 'orders')->name('customer.orders');
-        route::post('/customer/keranjang/order_menu', 'orderMenu')->name('customer.orderMenu');
+        Route::get('/customer/order_menu', 'orders')->name('customer.orders');
+        Route::post('/customer/keranjang/order_menu', 'orderMenu')->name('customer.orderMenu');
     });
 });
 

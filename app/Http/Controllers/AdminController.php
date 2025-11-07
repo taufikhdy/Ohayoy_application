@@ -12,6 +12,7 @@ use App\Models\Roles;
 use App\Models\User;
 use App\Models\Meja;
 use App\Models\Transaksi;
+use App\Models\Toko;
 use Illuminate\Http\Request;
 
 // Export Excel
@@ -19,8 +20,10 @@ use App\Exports\TransaksiExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -29,6 +32,13 @@ class AdminController extends Controller
 
     protected function admin()
     {
+        if (Auth::user()?->status === 'offline') {
+            Auth::logout();
+            Session::invalidate();
+            Session::regenerateToken();
+            return redirect()->route('login');
+        }
+
         if (!Auth::check() or Auth::user()?->role_id !== 1) {
             abort(403, 'Akses ditolak');
         }
@@ -63,7 +73,7 @@ class AdminController extends Controller
             'mejaAktif' => Meja::where('status', 'terisi')->count(),
             'meja' => Meja::count(),
             'transaksi' => Transaksi::count(),
-            'pemasukan' => Transaksi::sum('total_bayar'),
+            'pemasukan' => Transaksi::where('tanggal', today())->sum('total_bayar'),
             'pemasukan_bulanan' => Transaksi::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total_bayar'),
             // 'pemasukan_tahunan' => Transaksi::WhereYear('created_at', now()->Year)->sum('total_bayar')
         ]);
@@ -77,7 +87,8 @@ class AdminController extends Controller
         $transaksi = Transaksi::where('tanggal', today())->count();
         $transaksiAll = Transaksi::get()->count();
 
-        $data = Transaksi::latest()->get();
+        // $data = Transaksi::latest()->get();
+        $data = Transaksi::latest()->simplePaginate(15);
 
         $pemasukan = Transaksi::where('tanggal', today())->sum('total_bayar');
         $pemasukan_bulanan = Transaksi::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total_bayar');
@@ -124,7 +135,7 @@ class AdminController extends Controller
     public function menu()
     {
         $this->admin();
-        $kategoris = Kategori::all();
+        $kategoris = Kategori::latest()->get();
         $menus = Menu::latest()->get();
         $terlaris = Menu::orderBy('penjualan', 'desc')->take(5)->get();
         return view('admin.menu', compact('kategoris', 'menus', 'terlaris'));
@@ -175,24 +186,32 @@ class AdminController extends Controller
             'foto' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'nama_menu' => 'string|required',
             'harga' => 'integer|required',
-            'deskripsi' => 'string|required'
+            'deskripsi' => 'string|required',
+            'kategori_id' => 'required|exists:kategori,id'
         ]);
 
 
         $menu = Menu::where('id', $request->menu_id)->first();
 
-        if($request->hasFile('foto')){
-            if($menu->foto && Storage::exists($menu->foto)){
+
+        if ($request->hasFile('foto')) {
+            if ($menu->foto && Storage::exists($menu->foto)) {
                 Storage::delete($menu->foto);
+                $path = $request->file('foto')->store('menu', 'public');
+                $menu->foto = $path;
             };
+        } elseif ($request->hasFile('foto') === '') {
+            if ($menu->foto && Storage::exists($menu->foto)) {
+                $path = $menu->foto;
+                $menu->foto = $path;
+            }
         }
 
-        $path = $request->file('foto')->store('menu', 'public');
-
-        $menu->foto = $path;
+        // $menu->foto = $path;
         $menu->nama_menu = $request->nama_menu;
         $menu->harga = $request->harga;
         $menu->deskripsi = $request->deskripsi;
+        $menu->kategori_id = $request->kategori_id;
         $menu->save();
 
         return redirect()->route('admin.menu');
@@ -439,5 +458,31 @@ class AdminController extends Controller
         User::findOrFail($id)->delete();
 
         return redirect()->route('admin.pengguna');
+    }
+
+    public function regeneratePass($id)
+    {
+        $this->admin();
+
+        $user = User::findOrFail($id);
+
+        $newPassword = Str::random(7);
+
+        $user->password = Hash::make($newPassword);
+        $user->status = 'offline';
+        $user->save();
+
+
+        return redirect()->back()->with('success', "Password Baru Untuk  $user->name: $newPassword");
+    }
+
+
+    public function toko()
+    {
+        $this->admin();
+
+        $toko = Toko::latest()->first();
+
+        return view('admin.toko', compact('toko'));
     }
 }

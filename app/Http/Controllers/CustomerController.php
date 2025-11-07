@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jam;
 use App\Models\Kategori;
 use App\Models\Menu;
 use App\Models\Roles;
@@ -11,6 +12,7 @@ use App\Models\Keranjang;
 use App\Models\KeranjangItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Toko;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 
@@ -61,19 +63,22 @@ class CustomerController extends Controller
 
 
         $menu = Menu::withAvg('rating', 'nilai')->withCount('rating')->get();
+        $toko = Toko::latest()->first();
+        $jam = Jam::all();
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
         // $menu = Menu::latest()->get();
 
-        return view('customer.dashboard', compact('menu'));
+        return view('customer.dashboard', compact('menu', 'toko', 'jam', 'keranjang'));
     }
 
     public function detailMenu($id)
     {
         $this->customer();
         $menu = Menu::where('id', $id)->withAvg('rating', 'nilai')->withCount('rating')->first();
-
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
         $rekomendasi = Menu::withAvg('rating', 'nilai')->withCount('rating')->inRandomOrder()->limit(20)->get();
 
-        return view('customer.menus.detailMenu', compact('menu', 'rekomendasi'));
+        return view('customer.menus.detailMenu', compact('menu', 'rekomendasi', 'keranjang'));
 
         // if (
         //     $menu->kategori->nama_kategori === 'makanan'
@@ -107,13 +112,16 @@ class CustomerController extends Controller
         // $menu = Menu::latest()->get();
         // $menuId = Hashids::encode($menu->id);
         $menu = Menu::withAvg('rating', 'nilai')->withCount('rating')->latest()->get();
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
+        $kategori = Kategori::latest()->get();
 
-        return view('customer.menus.menu', compact('menu'));
+        return view('customer.menus.menu', compact('menu', 'keranjang', 'kategori'));
     }
 
     public function cariMenu(Request $request)
     {
         $this->customer();
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
         $search = $request->search;
 
         $result = Menu::query();
@@ -128,6 +136,26 @@ class CustomerController extends Controller
         return view('customer.menus.result', compact(
             'search',
             'menus',
+            'keranjang'
+        ));
+    }
+
+    public function cariKategori($kategori)
+    {
+        $this->customer();
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
+
+        $search = '';
+        $search_kategori = Kategori::findOrFail($kategori);
+        $result = Menu::where('kategori_id', $kategori);
+
+        $menus = $result->withAvg('rating', 'nilai')->withCount('rating')->get();
+
+        return view('customer.menus.result', compact(
+            'menus',
+            'search',
+            'search_kategori',
+            'keranjang'
         ));
     }
 
@@ -136,51 +164,64 @@ class CustomerController extends Controller
     {
         $this->customer();
 
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
         $mejaId = Auth::guard('meja')->id();
         $keranjang = Keranjang::where('meja_id', $mejaId)->first();
 
-        if (!$keranjang) {
-            $items = [];
-        } else {
+        $items = null;
+
+        if ($keranjang) {
             $items = KeranjangItem::where('keranjang_id', $keranjang->id)->latest()->get();
+        } elseif (!$keranjang) {
+            $items; // KARENA COLLECTION JADI KOSONGIN AJA KALO PAKE = [] ITU BUAT ARRAY DOANG SEDANGKAN COLLECTION !== ARRAY
         }
 
-        return view('customer.fitur.keranjang', compact('items'));
+        return view('customer.fitur.keranjang', compact('items', 'keranjang'));
     }
 
-    public function tambahKeranjang(Request $request, $mejaId)
-    {
-        $this->customer();
 
-        $request->validate([
-            'menu_id' => 'required|exists:menu,id',
-            'jumlah' => 'required|integer|min:1'
-        ]);
+    // TAMBAH KERANJANG GA DIPAKAI, PAKAINYA CONTROLLER KERANJANG
 
-        // CARI KERANJANG AKTIF MILIK MEJA
-        $keranjang = keranjang::firstOrCreate(
-            ['meja_id' => $mejaId, 'status' => 'active'], //syarat kondisi
-            ['status' => 'active'] //nilai default jika keranjang belum ada
-        );
+    // public function tambahKeranjang(Request $request, $mejaId)
+    // {
+    //     $this->customer();
 
-        // CEK MENU SUDAH ADA DI KERANJANG ATAU BELUM
-        $item = KeranjangItem::where('keranjang_id', $keranjang->id)->where('menu_id', $request->menu_id)->first();
+    //     $request->validate([
+    //         'menu_id' => 'required|exists:menu,id',
+    //         'jumlah' => 'required|integer|min:1'
+    //     ]);
 
-        if ($item) {
-            $item->update([
-                'jumlah' => $item->jumlah += $request->jumlah
-            ]);
-        } else {
-            // KALAU BELUM ADA BUAT BARU
-            KeranjangItem::create([
-                'keranjang_id' => $keranjang->id,
-                'menu_id' => $request->menu_id,
-                'jumlah' => $request->jumlah
-            ]);
-        }
+    //     // CARI KERANJANG AKTIF MILIK MEJA
+    //     $keranjang = keranjang::firstOrCreate(
+    //         ['meja_id' => $mejaId, 'status' => 'active'], //syarat kondisi
+    //         ['status' => 'active'] //nilai default jika keranjang belum ada
+    //     );
 
-        return redirect()->route('customer.detailMenu', $request->menu_id);
-    }
+    //     // CEK MENU SUDAH ADA DI KERANJANG ATAU BELUM
+    //     $item = KeranjangItem::where('keranjang_id', $keranjang->id)->where('menu_id', $request->menu_id)->first();
+
+    //     if ($item) {
+    //         $item->update([
+    //             'jumlah' => $item->jumlah += $request->jumlah
+    //         ]);
+    //     } else {
+    //         // KALAU BELUM ADA BUAT BARU
+    //         KeranjangItem::create([
+    //             'keranjang_id' => $keranjang->id,
+    //             'menu_id' => $request->menu_id,
+    //             'jumlah' => $request->jumlah
+    //         ]);
+    //     }
+
+    //     // session()->flash('success', 'Menu berhasil ditambahkan ke keranjang, yuk pesan sekarang 🍟🥤');
+    //     // return redirect()->route('customer.detailMenu', ['id' => $request->menu_id])->withSuccess('Menu berhasil ditambahkan ke keranjang, yuk pesan sekarang 🍟🥤');
+
+    //     return redirect()->route('customer.detailMenu', [
+    //         'id' => $request->menu_id,
+    //         'msg' => 'success'
+    //     ]);
+    // }
+
 
 
     public function orders()
@@ -190,8 +231,9 @@ class CustomerController extends Controller
         $mejaId = Auth::guard('meja')->id();
         $orders = Order::where('meja_id', $mejaId)->with('items.menu')->latest()->get();
         $total_bayar = Order::where('meja_id', $mejaId)->sum('total_harga');
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
 
-        return view('customer.fitur.order', compact('orders', 'total_bayar'));
+        return view('customer.fitur.order', compact('orders', 'total_bayar', 'keranjang'));
     }
 
 
@@ -246,7 +288,7 @@ class CustomerController extends Controller
         ]);
 
 
-        return redirect()->route('customer.orders');
+        return redirect()->route('customer.orders')->with('success', 'Menu Berhasil Dipesan, tunggu sebentar ya 🍳⏱️');
     }
 
 
@@ -255,11 +297,12 @@ class CustomerController extends Controller
     {
         $this->customer();
 
+        $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
         // $menu = Menu::findOrFail($id);
         $menu = Menu::where('id', $id)->withAvg('rating', 'nilai')->withCount('rating')->first();
         $ulasan = Rating::where('menu_id', $id)->latest()->get();
 
-        return view('customer.menus.ulasan', compact('menu', 'ulasan'));
+        return view('customer.menus.ulasan', compact('menu', 'ulasan', 'keranjang'));
     }
 
     public function tambahUlasan(Request $request)
@@ -276,8 +319,7 @@ class CustomerController extends Controller
 
         $punyaOrder = Order::where('meja_id', $mejaId)->where('status', 'ordered')->exists();
 
-        if(!$punyaOrder)
-        {
+        if (!$punyaOrder) {
             return back();
         }
 
@@ -296,6 +338,6 @@ class CustomerController extends Controller
             'ulasan' => $request->ulasan
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Ulasan berhasil dikirim, terimakasih sudah menikmati🌮🍕');
     }
 }

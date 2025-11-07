@@ -132,10 +132,7 @@
                             });
 
                             html += `
-                    <tr class="total">
-                        <td colspan='2'>Total Harga</td>
-                        <td>Rp. ${Number(order.total_harga).toLocaleString('id-ID')}</td>
-                    </tr>
+
                         </table>
                     </div>
 
@@ -228,3 +225,8 @@
         </script>
 
     @endsection
+
+    {{-- <tr class="total">
+        <td colspan='2'>Total Harga</td>
+        <td>Rp. ${Number(order.total_harga).toLocaleString('id-ID')}</td>
+    </tr> --}}

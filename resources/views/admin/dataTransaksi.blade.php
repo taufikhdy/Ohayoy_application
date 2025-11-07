@@ -88,6 +88,8 @@
                 @endif
                 </table>
             </div>
+
+            {{ $data->links() }}
         </div>
     </div>
 

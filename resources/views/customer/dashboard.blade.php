@@ -4,6 +4,13 @@
 
 @section('content')
 
+    @if(session('error'))
+
+        <div class="message error" id="message">
+            {{session('error')}}
+        </div>
+
+    @endif
 
     <div class="banner">
         <img src="{{ asset('images/banner.jpeg') }}" alt="" class="object-fit">
@@ -36,14 +43,16 @@
                     <img src="{{ asset('storage/' . $m->foto) }}" alt="" class="object-fit">
                 </div>
 
-                <div class="flex flex-between align-center w100">
-                    <div class="">
-                        <h3 class="title">{{ $m->nama_menu }}</h3>
+                <div class="w100">
+                    <h3 class="title mb30">{{ $m->nama_menu }}</h3>
+                    <div class="menu-badge w100">
+                        {{-- <div class=""> --}}
                         <p class="badge-sm">{{ $m->kategori->nama_kategori }}</p>
-                    </div>
+                        <h3 class="text-nowrap"><i class="ri-star-fill text-medium star"></i>
+                            {{ number_format($m->rating_avg_nilai, 1) }}</h3>
+                        {{-- </div> --}}
 
-                    <h3 class="text-nowrap"><i class="ri-star-fill text-medium star"></i>
-                        {{ number_format($m->rating_avg_nilai, 1) }}</h3>
+                    </div>
                 </div>
             </a>
         @endforeach

@@ -11,10 +11,10 @@
                 <div class="element-title">
                     <h3>Tabel Menu</h3>
                 </div>
-                <div class="flex align-center gap10">
+                {{-- <div class="flex align-center gap10">
                     <button>Terlaris</button>
                     <button>Terbaru</button>
-                </div>
+                </div> --}}
             </div>
 
             <div class="table-container">

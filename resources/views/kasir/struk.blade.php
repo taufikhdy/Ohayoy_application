@@ -15,19 +15,21 @@
         <div class="">
             <div class="box">
                 <div class="title">
-                    Ohayoy
+                    <h2>{{ $toko->nama_toko }}</h2>
                 </div>
 
                 <div class="data-address">
-                    <p class="address">123 Ice St,. Cream City</p>
-                    <p class="site">www.ohahyoy.com</p>
+                    <p class="text-small text-center">{{ $toko->tagline_toko }}</p>
+                    <br>
+                    <p class="address">{{ $toko->alamat_toko }}</p>
+                    <p class="site">{{ $toko->website_toko }}</p>
                 </div>
 
                 @foreach ($order_item as $meja => $order)
                     <div class="data">
                         <div class="data-left">
                             <p>Order #{{ $transaksi->order_id }}</p>
-                            <p>Date {{ $transaksi->created_at->format('d-m-Y')}}</p>
+                            <p>Date {{ $transaksi->created_at->format('d-m-Y') }}</p>
                         </div>
 
                         <div class="data-right">
@@ -61,6 +63,7 @@
                             </tr>
                         </table>
                     </div>
+                    <p>{{ $toko->ucapan }}</p>
                     <div class="form">
                         <form action="{{ route('kasir.resetOrder') }}" method="post">
                             @csrf
@@ -70,8 +73,8 @@
                         <button onclick="print()" class="btn-primary">Cetak Struk</button>
                     </div>
             </div>
-
             @endforeach
+
         </div>
     </div>
 

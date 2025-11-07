@@ -102,12 +102,13 @@
                             <p class="text-center">Belum ada data menu</p>
                         </tr>
                     @else
-                        <tr>
+                        <tr class="toptape">
                             <th>No</th>
                             <th>Gambar Menu</th>
                             <th>Nama Menu</th>
                             <th>Harga</th>
                             <th>Deskripsi</th>
+                            <th>Kategori</th>
                             <th>Status Stok</th>
                             <th>Penjualan</th>
                             <th>Ulasan</th>
@@ -123,27 +124,43 @@
                                 <td>{{ $no++ }}</td>
                                 <form action="{{ route('admin.editMenu') }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                    <td class="tape">
-                                        <label for="edit-foto{{$menu->id}}"><img src="{{ asset('storage/' . $menu->foto) }}"
+                                    <td class="tapes">
+                                        <label for="edit-foto{{ $menu->id }}"><img
+                                                src="{{ asset('storage/' . $menu->foto) }}"
                                                 alt="{{ $menu->nama_menu }}"></label>
-                                        <input type="file" name="foto" id="edit-foto{{$menu->id}}" class="edit-input file" disabled>
+                                        <input type="file" name="foto" id="edit-foto{{ $menu->id }}"
+                                            class="edit-input file" disabled>
                                     </td>
                                     <td><input type="text" name="nama_menu" class="edit-input w-max"
                                             value="{{ $menu->nama_menu }}" disabled></td>
                                     <td>
                                         <div class="flex align-center gap10">Rp. <input type="text" name="harga"
                                                 value="{{ $menu->harga }}" class="edit-input w-max" disabled></div>
-                                        <input type="hidden" name="menu_id" id="" value="{{ $menu->id }}">
+                                        <input type="hidden" name="menu_id" id=""
+                                            value="{{ $menu->id }}">
                                         <button type="submit" class="hidden"
                                             id="submitEdit{{ $menu->id }}">Edit</button>
                                     </td>
 
                                     <td>
-                                        <textarea name="deskripsi" id="" cols="" rows="" class="edit-input w-max textarea-edit"
-                                            disabled>{{ $menu->deskripsi }}</textarea>
+                                        <textarea name="deskripsi" id="" cols="" rows=""
+                                            class="edit-input w-max textarea-edit desc-text" disabled onclick="openModal(this)">{{ $menu->deskripsi }}</textarea>
+                                    </td>
+
+                                    <td>
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <select name="kategori_id" class="btn-blue option edit-input" disabled>
+                                            <option value="{{ $menu->kategori_id }}">{{ $menu->kategori->nama_kategori }}
+                                            </option>
+
+                                            @foreach ($kategoris as $k)
+                                                <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
 
                                 </form>
+
 
                                 <td>
 
@@ -162,6 +179,7 @@
                                     </form>
 
                                 </td>
+
                                 <td>{{ $menu->penjualan }} Terjual</td>
                                 <td><a href="{{ route('admin.ulasan', $menu->id) }}" class="link">lihat ulasan</a></td>
                                 <td>
@@ -185,6 +203,23 @@
             </div>
         </div>
 
+
+        {{-- Modal --}}
+
+        <div class="modal" id="modal">
+            <div class="modal-content">
+                <span class="close flex flex-end" onclick="closeModal()"><i class="ri-2x ri-close-fill"></i>
+                </span>
+
+                <h3>Edit Deskripsi</h3>
+
+                <textarea id="descInput" class="textarea1"></textarea>
+
+                <div class="flex flex-end">
+                    <button class="btn-blue" onclick="saveDesc()">Simpan</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection

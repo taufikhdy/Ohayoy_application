@@ -110,7 +110,7 @@
                         $('#meja').text(data.meja);
                         $('#transaksi').text(data.transaksi);
                         $('#pemasukan').text("Rp. " + Number(data.pemasukan).toLocaleString('id-ID'));
-                        $('#pemasukan_bulanan').text("Rp. " + Number(data.pemasukan).toLocaleString('id-ID'));
+                        $('#pemasukan_bulanan').text("Rp. " + Number(data.pemasukan_bulanan).toLocaleString('id-ID'));
                         // $('#pemasukan_tahunan').text("Rp. " + Number(data.pemasukan).toLocaleString('id-ID'));
                     },
                     error: function(xhr) {

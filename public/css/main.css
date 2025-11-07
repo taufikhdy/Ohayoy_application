@@ -27,6 +27,10 @@ a {
     text-decoration: none;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .white {
     color: white;
 }
@@ -447,18 +451,18 @@ input {
     transition: .3s ease-in-out;
 }
 
-.textarea-edit:focus {
-    position: absolute;
-    z-index: 80;
-    width: 80%;
-    height: 25%;
-    /* height: 100vh; */
-    /* top: ; */
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* .textarea-edit:focus { */
+position: absolute;
+z-index: 80;
+width: 70vw;
+height: 30%;
+/* height: 100vh; */
+/* top: 50%; */
+left: 50%;
+transform: translate(-50%, 15%);
 }
 
-label{
+label {
     cursor: pointer;
 }
 
@@ -475,6 +479,12 @@ textarea:disabled {
 
 select option {
     background-color: var(--neutral-100);
+}
+
+select:disabled {
+    background-color: var(--neutral-90);
+    border: 1px solid var(--neutral-70);
+    color: var(--neutral-40);
 }
 
 .file {
@@ -597,12 +607,22 @@ input[type='submit']:hover{
     /* border-radius: 8px; */
 }
 
+.list-item .name {
+    width: 80%;
+}
+
+.list-item .order {
+    width: max-content;
+    text-wrap: nowrap;
+}
+
 table {
     border-collapse: collapse;
     text-align: center;
     /* width: 100%; */
     text-wrap: nowrap;
     background-color: var(--neutral-100);
+
 }
 
 table th,
@@ -614,8 +634,6 @@ table td {
 table th {
     background-color: var(--primary);
     color: var(--neutral-100);
-    position: sticky;
-    top: 10;
     /* border: 1px solid var(--neutral-100); */
 }
 
@@ -636,10 +654,12 @@ table.p10 td {
 .table-container {
     width: 100%;
     overflow-x: auto;
+    /* position: relative; */
 }
 
 .table {
     width: 100%;
+    position: relative;
 }
 
 .p10 {
@@ -651,6 +671,12 @@ table.p10 td {
     left: 0;
     z-index: 10;
     background-color: var(--neutral-100);
+}
+
+.toptape {
+    position: sticky;
+    top: 0;
+    z-index: 70;
 }
 
 
@@ -671,8 +697,14 @@ table.p10 td {
         margin-bottom: 10px;
     }
 
-    .content {
+    section.flex {
+        display: block;
         width: 100%;
+    }
+
+    .content {
+        /* display: block; */
+        width: max-content;
         padding: 0px 30px;
     }
 

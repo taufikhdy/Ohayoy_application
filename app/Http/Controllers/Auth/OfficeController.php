@@ -18,6 +18,7 @@ class OfficeController extends Controller
 
     public function login(): View
     {
+
         if (Auth::user()?->role_id === 1) {
             return view('admin.dashboard');
         } elseif (Auth::user()?->role_id === 2) {

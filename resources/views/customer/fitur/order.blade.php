@@ -5,11 +5,17 @@
 @section('content')
 
 
+    @if (session('success'))
+        <div class="message success" id="message">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="keranjang">
 
         @if ($orders->isEmpty())
             <div class="text-block text-center">
-                <h5>Belum ada menu.</h5>
+                <h5>Kamu belum pesan menu.</h5>
                 <br>
                 <h1> ヾ(≧▽≦*)o </h1>
                 <br>
@@ -31,7 +37,7 @@
 
                                     <div class="flex flex-between align-center w100">
                                         <div class="w100">
-                                            <h3 class="title">{{ $i->menu->nama_menu }}</h3>
+                                            <h3 class="title mb10">{{ $i->menu->nama_menu }}</h3>
 
                                             <div class="flex align-center gap10">
                                                 <p class="badge-sm">{{ $i->menu->kategori->nama_kategori }}</p>
