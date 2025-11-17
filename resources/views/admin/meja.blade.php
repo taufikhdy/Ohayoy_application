@@ -53,8 +53,9 @@
         </div>
 
 
-        <div class="element-title">
+        <div class="element-title flex flex-between">
             <h3>Tabel Meja</h3>
+            <a href="{{route('admin.printAllQr')}}" class="btn-blue">Cetak Semua</a>
         </div>
 
         <div class="container-w1">
@@ -104,7 +105,7 @@
 
                                 <td>
                                     <div class="flex align-center flex-center gap10">
-                                        <button class="btn-blue" onclick="print()">Print</button>
+                                        <a href="{{route('admin.print', $data['meja']->id)}}" class="btn-blue">Cetak</a>
                                         <form action="{{ route('admin.hapusMeja', $data['meja']->id) }}" method="post"
                                             onclick="return confirm('Yakin ingin menghapus meja ini?')">
                                             @csrf
@@ -121,6 +122,8 @@
                     {{-- <div id="mejaData"></div> --}}
                 </table>
             </div>
+
+            {{-- {{ $meja->links('vendor.pagination.custom') }} --}}
 
         </div>
 

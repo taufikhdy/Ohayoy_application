@@ -66,7 +66,8 @@ class KasirController extends Controller
     {
         $transaksi = Transaksi::where('tanggal', today())->count();
 
-        $data = Transaksi::latest()->get();
+        // $data = Transaksi::latest()->get();
+        $data = Transaksi::latest()->paginate(25);
 
         $pemasukan = Transaksi::where('tanggal', today())->sum('total_bayar');
         $pemasukan_bulanan = Transaksi::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total_bayar');
@@ -180,7 +181,8 @@ class KasirController extends Controller
     {
         $this->kasir();
 
-        $menus = Menu::latest()->get();
+        // $menus = Menu::latest()->get();
+        $menus = Menu::latest()->paginate(20);
         return view('kasir.menu', compact('menus'));
     }
 

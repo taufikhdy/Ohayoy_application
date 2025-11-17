@@ -132,22 +132,14 @@
         const ctx = document.getElementById("myLineChart");
 
         new Chart(ctx, {
-            type: "line",
+            type: "bar",
             data: {
-                labels: [
-                    "Senin",
-                    "Selasa",
-                    "Rabu",
-                    "Kamis",
-                    "Jumat",
-                    "Sabtu",
-                    "Minggu",
-                ],
+                labels: @json($bulans),
                 datasets: [{
-                    label: "Penjualan",
-                    data: [12, 19, 15, 8, 10, 14, 20],
+                    label: "Pemasukan",
+                    data: @json($totals),
                     borderColor: "hsla(218, 95%, 48%, 0.8)",
-                    backgroundColor: "hsla(218, 95%, 48%, 0.2)",
+                    backgroundColor: "hsla(218, 95%, 48%, 0.5)",
                     fill: true,
                     tension: 0.3,
                 }, ],
@@ -162,6 +154,9 @@
                 scales: {
                     y: {
                         beginAtZero: true,
+                        ticks: {
+                             callback: value => 'Rp ' + value.toLocaleString()
+                        }
                     },
                 },
             },

@@ -10,6 +10,7 @@
     <title>@yield('title')</title>
 
     <link rel="stylesheet" href="{{ asset('css/main.css?v12++') }}">
+    <link rel="stylesheet" href="{{ asset('css/pagination.css') }}">
     <link rel="stylesheet" href="{{ asset('css/card.css?v12++') }}">
     <link rel="stylesheet" href="{{ asset('css/animation.css') }}">
     <link rel="stylesheet" href="{{ asset('remixicon/fonts/remixicon.css?v2++') }}">

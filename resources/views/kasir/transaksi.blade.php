@@ -80,6 +80,7 @@
                 @endif
                 </table>
             </div>
+            {{ $data->links('vendor.pagination.custom') }}
         </div>
     </div>
 

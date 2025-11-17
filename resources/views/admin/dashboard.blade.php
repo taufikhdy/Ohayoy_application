@@ -6,7 +6,7 @@
 
     <div class="content">
         <div class="container-w1">
-          <h3 class="element-title">Dashboard</h3>
+          <h3 class="element-title">Beranda</h3>
           <div class="widget1">
             <div class="long-box">
               <h5 class="box-title">Penjualan Harian</h5>

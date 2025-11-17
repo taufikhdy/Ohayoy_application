@@ -35,7 +35,7 @@
         @if ($keranjang)
             <a href="{{ route('customer.keranjang') }}" class="bounce {{ Request::is('customer/keranjang*') ? 'off' : '' }}"
                 title="Keranjang"><i class="ri-shopping-basket-2-line cart-link"></i></a>
-        @elseif($keranjang === 0)
+        @elseif($keranjang <= 1)
             <a href="{{ route('customer.keranjang') }}" class="{{ Request::is('customer/keranjang*') ? 'off' : '' }}"
                 title="Keranjang"><i class="ri-shopping-basket-2-line cart-link"></i></a>
         @endif

@@ -68,6 +68,9 @@
                     @endif
                 </table>
             </div>
+
+            {{ $menus->links('vendor.pagination.custom') }}
+
         </div>
 
     </div>

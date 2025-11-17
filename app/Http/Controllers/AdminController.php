@@ -56,7 +56,22 @@ class AdminController extends Controller
 
 
         $terlaris = Menu::orderBy('penjualan', 'desc')->take(5)->get();
-        return view('admin.report', compact('terlaris'));
+
+        $tahun = date('Y');
+
+        $bulans = [
+            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        $totals = [];
+
+        foreach(range(1,12) as $bulan){
+            $total = Transaksi::whereYear('created_at', $tahun)->whereMonth('created_at', $bulan)->sum('total_bayar');
+
+            $totals[] = $total;
+        }
+
+        return view('admin.report', compact('terlaris', 'totals', 'bulans', 'tahun'));
     }
 
     public function reportData()
@@ -88,7 +103,7 @@ class AdminController extends Controller
         $transaksiAll = Transaksi::get()->count();
 
         // $data = Transaksi::latest()->get();
-        $data = Transaksi::latest()->simplePaginate(15);
+        $data = Transaksi::latest()->Paginate(15);
 
         $pemasukan = Transaksi::where('tanggal', today())->sum('total_bayar');
         $pemasukan_bulanan = Transaksi::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total_bayar');
@@ -136,7 +151,10 @@ class AdminController extends Controller
     {
         $this->admin();
         $kategoris = Kategori::latest()->get();
-        $menus = Menu::latest()->get();
+
+        $menus = Menu::latest()->Paginate(20);
+
+        // $menus = Menu::latest()->get();
         $terlaris = Menu::orderBy('penjualan', 'desc')->take(5)->get();
         return view('admin.menu', compact('kategoris', 'menus', 'terlaris'));
     }
@@ -270,6 +288,8 @@ class AdminController extends Controller
         $this->admin();
 
         $meja = Meja::all();
+        // $meja = Meja::latest()->Paginate(2);
+
 
         $oldUrl = Meja::orderBy('created_at', 'asc')->first();
 
@@ -347,10 +367,84 @@ class AdminController extends Controller
                 'url' => $urlFull,
                 'qr' => QrCode::size(80)->generate($urlFull)
             ];
+
         }
 
         return view('admin.meja', compact('role', 'default', 'qrcode'));
     }
+
+
+    public function printAllQr()
+    {
+        $this->admin();
+
+        $meja = Meja::latest()->get();
+
+        $qrcode = [];
+
+
+        foreach ($meja as $m) {
+            $hash = Hashids::connection('meja')->encode($m->id);
+            if ($m->url) {
+                $url = $m->url;
+            } else {
+                $oldUrl = Meja::whereNotNull('url')->orderBy('created_at', 'asc')->first();
+                $url = $oldUrl ? $oldUrl->url : '/';
+            }
+
+            // $m->url = $url;
+            // $m->save();
+
+            $urlFull = url($url . '/' . $hash);
+
+
+            // simpan hasil ke array
+            $qrcode[] = [
+                'meja' => $m,
+                'url' => $urlFull,
+                'qr' => QrCode::size(180)->generate($urlFull)
+            ];
+
+        }
+        return view('admin.print_qrcode', compact('qrcode'));
+
+    }
+
+    public function print($id)
+    {
+        $this->admin();
+
+        $meja = Meja::findOrfail($id);
+
+        $qrcode = [];
+
+
+            $hash = Hashids::connection('meja')->encode($meja->id);
+            if ($meja->url) {
+                $url = $meja->url;
+            } else {
+                $oldUrl = Meja::whereNotNull('url')->orderBy('created_at', 'asc')->first();
+                $url = $oldUrl ? $oldUrl->url : '/';
+            }
+
+            // $m->url = $url;
+            // $m->save();
+
+            $urlFull = url($url . '/' . $hash);
+
+
+            // simpan hasil ke array
+            $qrcode[] = [
+                'meja' => $meja,
+                'url' => $urlFull,
+                'qr' => QrCode::size(140)->generate($urlFull)
+            ];
+
+        return view('admin.print_qrcode', compact('qrcode'));
+
+    }
+
+
 
     public function buatUrl(Request $request)
     {
@@ -484,5 +578,43 @@ class AdminController extends Controller
         $toko = Toko::latest()->first();
 
         return view('admin.toko', compact('toko'));
+    }
+
+    public function editToko()
+    {
+        $this->admin();
+
+        $toko = Toko::latest()->first();
+
+        return view('admin.special_page', compact('toko'));
+
+    }
+
+    public function editTokoPost(Request $request)
+    {
+        $this->admin();
+
+        $request->validate([
+            'id_toko' => 'integer|required',
+            'nama_toko' => 'string',
+            'tagline_toko' => 'string',
+            'alamat_toko' => 'string',
+            'website_toko' => 'string',
+            'ucapan' => 'string',
+
+        ]);
+
+        $toko = Toko::findOrFail($request->id_toko);
+
+        if($toko){
+            $toko->nama_toko = $request->nama_toko;
+            $toko->tagline_toko = $request->tagline_toko;
+            $toko->alamat_toko = $request->alamat_toko;
+            $toko->website_toko = $request->website_toko;
+            $toko->ucapan = $request->ucapan;
+            $toko->save();
+        }
+
+        return redirect()->route('admin.toko');
     }
 }

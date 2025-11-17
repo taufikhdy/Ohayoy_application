@@ -89,7 +89,7 @@
                 </table>
             </div>
 
-            {{ $data->links() }}
+            {{ $data->links('vendor.pagination.custom') }}
         </div>
     </div>
 

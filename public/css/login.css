@@ -45,6 +45,10 @@
     --h6-height: 24px;
 }
 
+.w50{
+    width: 50%;
+}
+
 
 * {
     padding: 0;

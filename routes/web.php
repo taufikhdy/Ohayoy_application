@@ -64,6 +64,9 @@ Route::controller(AdminController::class)->group(function () {
     route::delete('/admin/menu/hapusMeja/{id}', 'hapusMeja')->name('admin.hapusMeja');
     route::post('/admin/meja/buatUrl', 'buatUrl')->name('admin.buatUrl');
 
+    route::get('/admin/meja/printAllQr', 'printAllQr')->name('admin.printAllQr');
+    route::get('/admin/meja/print/{id}', 'print')->name('admin.print');
+
     route::get('/admin/jamOperasional', 'jam')->name('admin.jam');
     route::post('/admin/jamOperasional/edit', 'editJam')->name('admin.editJam');
 
@@ -73,6 +76,8 @@ Route::controller(AdminController::class)->group(function () {
     route::post('/admin/pengguna/pass/{id}', 'regeneratePass')->name('admin.regeneratePass');
 
     route::get('/admin/toko', 'toko')->name('admin.toko');
+    route::get('/admin/toko/edit', 'editToko')->name('admin.editToko');
+    route::post('/admin/toko/edit/post', 'editTokopost')->name('admin.editTokoPost');
 });
 
 

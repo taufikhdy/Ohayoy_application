@@ -11,8 +11,10 @@
         <input type="submit" value="">
     </form>
 </div> --}}
+
     <div class="content">
         <div class="container-w1">
+
 
             <div class="element-title">
                 <h3>Tentang Toko</h3>
@@ -32,7 +34,7 @@
             </p>
 
             <div class="w-100 text-center">
-                <button type="button" class="btn-yellow">Edit</button>
+                <a href="{{route('admin.editToko')}}" class="btn-yellow text-small">Edit</a>
                 <br>
                 <br>
                 <p class="text-small">Diperbarui Pada {{$toko->updated_at}} <br> Dibuat Pada {{$toko->created_at}}</p>

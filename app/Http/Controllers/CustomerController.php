@@ -320,7 +320,7 @@ class CustomerController extends Controller
         $punyaOrder = Order::where('meja_id', $mejaId)->where('status', 'ordered')->exists();
 
         if (!$punyaOrder) {
-            return back();
+            return redirect()->back()->with('success', 'Kamu belum pesan sesuatu, yuk pesan dahulu agar bisa memberi ulasan🤠🍟');
         }
 
         // $sudahRating = Rating::where('menu_id', $menuId)->where('meja_id', $mejaId)->exists();
