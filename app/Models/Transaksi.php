@@ -16,6 +16,7 @@ class Transaksi extends Model
         'nama_pelanggan',
         'order_id',
         'kasir_id',
+        'nama_kasir',
         'total_bayar',
         'status_bayar',
         'waktu',

@@ -55,6 +55,7 @@
                                 <th>Id Meja</th>
                                 <th>Nama Pelanggan</th>
                                 <th>Kode Order</th>
+                                <th>ID Kasir</th>
                                 <th>Kasir</th>
                                 <th>Total Bayar</th>
                                 <th>Status</th>
@@ -69,7 +70,8 @@
                                 <td>{{ $d->meja_id }}</td>
                                 <td>{{ $d->nama_pelanggan }}</td>
                                 <td>{{ $d->order_id }}</td>
-                                <td>{{ $d->kasir->name }}</td>
+                                <td>{{ $d->kasir_id }}</td>
+                                <td>{{ $d->nama_kasir }}</td>
                                 <td>{{ 'Rp. ' . number_format($d->total_bayar, 0, ',', '.') }}</td>
                                 <td>{{ $d->status_bayar }}</td>
                                 <td>{{ $d->created_at->format('d-m-Y') }}</td>

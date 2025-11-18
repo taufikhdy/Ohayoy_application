@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('meja_id');
             $table->string('nama_pelanggan');
             $table->string('order_id');
-            $table->foreignId('kasir_id')->nullable()->constrained('users')->nullOnDelete();
+            // $table->foreignId('kasir_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('kasir_id');
+            $table->string('nama_kasir');
 
             $table->integer('total_bayar');
 

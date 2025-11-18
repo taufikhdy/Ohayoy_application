@@ -60,12 +60,23 @@ class AdminController extends Controller
         $tahun = date('Y');
 
         $bulans = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
 
         $totals = [];
 
-        foreach(range(1,12) as $bulan){
+        foreach (range(1, 12) as $bulan) {
             $total = Transaksi::whereYear('created_at', $tahun)->whereMonth('created_at', $bulan)->sum('total_bayar');
 
             $totals[] = $total;
@@ -367,7 +378,6 @@ class AdminController extends Controller
                 'url' => $urlFull,
                 'qr' => QrCode::size(80)->generate($urlFull)
             ];
-
         }
 
         return view('admin.meja', compact('role', 'default', 'qrcode'));
@@ -404,10 +414,8 @@ class AdminController extends Controller
                 'url' => $urlFull,
                 'qr' => QrCode::size(180)->generate($urlFull)
             ];
-
         }
         return view('admin.print_qrcode', compact('qrcode'));
-
     }
 
     public function print($id)
@@ -419,29 +427,28 @@ class AdminController extends Controller
         $qrcode = [];
 
 
-            $hash = Hashids::connection('meja')->encode($meja->id);
-            if ($meja->url) {
-                $url = $meja->url;
-            } else {
-                $oldUrl = Meja::whereNotNull('url')->orderBy('created_at', 'asc')->first();
-                $url = $oldUrl ? $oldUrl->url : '/';
-            }
+        $hash = Hashids::connection('meja')->encode($meja->id);
+        if ($meja->url) {
+            $url = $meja->url;
+        } else {
+            $oldUrl = Meja::whereNotNull('url')->orderBy('created_at', 'asc')->first();
+            $url = $oldUrl ? $oldUrl->url : '/';
+        }
 
-            // $m->url = $url;
-            // $m->save();
+        // $m->url = $url;
+        // $m->save();
 
-            $urlFull = url($url . '/' . $hash);
+        $urlFull = url($url . '/' . $hash);
 
 
-            // simpan hasil ke array
-            $qrcode[] = [
-                'meja' => $meja,
-                'url' => $urlFull,
-                'qr' => QrCode::size(140)->generate($urlFull)
-            ];
+        // simpan hasil ke array
+        $qrcode[] = [
+            'meja' => $meja,
+            'url' => $urlFull,
+            'qr' => QrCode::size(140)->generate($urlFull)
+        ];
 
         return view('admin.print_qrcode', compact('qrcode'));
-
     }
 
 
@@ -524,9 +531,47 @@ class AdminController extends Controller
     {
         $this->admin();
 
+        $id = Auth::user()->id;
+        $admin = User::findOrFail($id);
         $role = Roles::all();
         $user = User::all();
-        return view('admin.pengguna', compact('role', 'user'));
+        return view('admin.pengguna', compact('role', 'user', 'admin'));
+    }
+
+    public function editPengguna($id)
+    {
+        $this->admin();
+
+        $user = User::findOrFail($id);
+
+        return view('admin.editAkun', compact('user'));
+    }
+
+    public function editPenggunaPost(Request $request)
+    {
+        $this->admin();
+
+        // $request->validate([
+        //     'name' => 'required|string',
+        //     'foto' => 'nullable|mimes:jpeg,jpg,png|max:5120'
+        // ]);
+
+        $user = User::findOrFail($request->id);
+
+        $user->name = $request->name;
+
+        if ($request->hasFile('foto')) {
+            if ($user->foto) {
+                Storage::disk('public')->delete($user->foto);
+                $user->foto = $request->file('foto')->store('user', 'public');
+            }else{
+                $user->foto = $request->file('foto')->store('user', 'public');  
+            }
+        }
+
+        $user->save();
+
+        return redirect()->route('admin.pengguna')->with('success', 'Data berhasil diperbarui');
     }
 
     public function tambahPengguna(Request $request)
@@ -537,10 +582,20 @@ class AdminController extends Controller
             'name' => 'string|required',
             'password' => 'string|required',
             'role_id' => 'required|exists:roles,id',
-            'foto' => 'string|nullable'
+            'foto' => 'nullable|mimes:png,jpg,jpeg|max:5120'
         ]);
 
-        User::create($request->all());
+        $filePath = null;
+
+        if ($request->hasFile('foto')) {
+            $filePath = $request->file('foto')->store('user', 'public');
+        }
+        User::create([
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
+            'role_id' => $request->role_id,
+            'foto' => $filePath
+        ]);
 
         return redirect()->route('admin.pengguna');
     }
@@ -587,7 +642,6 @@ class AdminController extends Controller
         $toko = Toko::latest()->first();
 
         return view('admin.special_page', compact('toko'));
-
     }
 
     public function editTokoPost(Request $request)
@@ -606,7 +660,7 @@ class AdminController extends Controller
 
         $toko = Toko::findOrFail($request->id_toko);
 
-        if($toko){
+        if ($toko) {
             $toko->nama_toko = $request->nama_toko;
             $toko->tagline_toko = $request->tagline_toko;
             $toko->alamat_toko = $request->alamat_toko;

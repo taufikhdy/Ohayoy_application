@@ -28,7 +28,7 @@
 }
 
 .pagination-btn.disabled {
-    background-color: gray;
+    background-color: var(--neutral-40);
     color: var(--neutral-20);
     cursor: not-allowed;
 }

@@ -71,6 +71,9 @@ Route::controller(AdminController::class)->group(function () {
     route::post('/admin/jamOperasional/edit', 'editJam')->name('admin.editJam');
 
     route::get('/admin/pengguna', 'pengguna')->name('admin.pengguna');
+    route::get('/admin/pengguna/edit/{id}', 'editPengguna')->name('admin.editAkun');
+    route::post('/admin/pengguan/post', 'editPenggunaPost')->name('admin.editPenggunaPost');
+
     route::post('/admin/pengguna/tambahPengguna', 'tambahPengguna')->name('admin.tambahPengguna');
     route::delete('/admin/pengguna/hapusPengguna/{id}', 'hapusPengguna')->name('admin.hapusPengguna');
     route::post('/admin/pengguna/pass/{id}', 'regeneratePass')->name('admin.regeneratePass');

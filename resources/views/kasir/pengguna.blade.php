@@ -16,9 +16,9 @@
 
                     <div class="profile-info w-100">
                         <div class="text-info text-bold">{{ Auth::User()->name }}</div>
-                        <div class="text-info">Role Pengguna</div>
+                        <div class="text-info">Role Pengguna :</div>
                         <div class="text-info text-bold">{{ Auth::user()->role->nama_role }}</div>
-                        <div class="flex flex-end link w-100 pointer"><i class="ri-xl ri-pencil-line"></i></div>
+                        {{-- <div class="flex flex-end link w-100"><a href="{{route('kasir.editAkun', Auth::user()?->id)}}" class="btn-blue">Edit</a></div> --}}
                     </div>
                 </div>
             </div>

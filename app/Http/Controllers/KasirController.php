@@ -106,7 +106,7 @@ class KasirController extends Controller
         ]);
 
         $mejaId = $request->meja_id;
-        $kasir = Auth::user()->id;
+        $kasir = Auth::user();
 
         $orderId = Order::with('meja')->where('meja_id', $mejaId)->pluck('id')->implode('');
 
@@ -123,7 +123,8 @@ class KasirController extends Controller
                 'nama_pelanggan' => $namaPelanggan,
                 // 'nama_pelanggan' => 'nama',
                 'order_id' => $orderId,
-                'kasir_id' => $kasir,
+                'kasir_id' => $kasir->id,
+                'nama_kasir' => $kasir->name,
                 'total_bayar' => $total,
                 'status_bayar' => 'paid',
                 'waktu' => now()->format('H:i:s'),
@@ -208,7 +209,7 @@ class KasirController extends Controller
         $this->kasir();
 
         $id = Auth::user()?->id;
-        $transaksi = Transaksi::where('kasir_id', $id)->count();
+        $transaksi = Transaksi::where('kasir_id', $id)->where('created_at', today())->count();
         return view('kasir.pengguna', compact('transaksi'));
     }
 }

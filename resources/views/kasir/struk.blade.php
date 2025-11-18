@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="data-right">
-                            <p>kasir/{{ $transaksi->kasir->name }}</p>
+                            <p>kasir/{{ $transaksi->nama_kasir }}</p>
                             <p>{{ $transaksi->waktu }}</p>
                         </div>
                     </div>

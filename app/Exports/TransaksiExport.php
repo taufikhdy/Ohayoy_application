@@ -27,7 +27,7 @@ class TransaksiExport implements FromCollection, WithHeadings
                 'meja_id' => $d->meja_id,
                 'nama_pelanggan' => $d->nama_pelanggan,
                 'kasir_id' => $d->kasir_id,
-                'kasir' => $d->kasir->name,
+                'kasir' => $d->nama_kasir,
                 'total_bayar' => $d->total_bayar,
                 'tanggal' => $d->tanggal,
                 'waktu' => $d->waktu

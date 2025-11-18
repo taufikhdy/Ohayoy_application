@@ -20,13 +20,13 @@
                     </div>
 
                     <div class="profile-content">
-                        <img src="" alt="user photo" class="foto">
+                        <img src="{{Storage::url($admin->foto)}}" alt="user photo" class="foto">
 
                         <div class="profile-info w-100">
                             <div class="text-info text-bold">{{ Auth::User()->name }}</div>
                             <div class="text-info">Role Pengguna</div>
                             <div class="text-info text-bold">{{ Auth::user()->role->nama_role }}</div>
-                            <div class="flex flex-end link w-100 pointer"><i class="ri-xl ri-pencil-line"></i></div>
+                            <div class="flex flex-end link w-100"><a href="{{route('admin.editAkun', Auth::user()?->id)}}" class="btn-blue">Edit</a></div>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div class="profile-title">
                         <h3>Tambah Pengguna</h3>
                     </div>
-                    <form action="{{ route('admin.tambahPengguna') }}" method="post">
+                    <form action="{{ route('admin.tambahPengguna') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="text" name="name" id="" placeholder="Nama Pengguna">
 
@@ -71,6 +71,7 @@
                 <table class="table p10">
                     <tr>
                         <th>No</th>
+                        <th>Foto</th>
                         <th>Nama Pengguna</th>
                         <th>Role</th>
                         <th>Status</th>
@@ -86,6 +87,7 @@
                     @foreach ($user as $u)
                         <tr>
                             <td>{{ $no++ }}</td>
+                            <td><img src="{{Storage::url($u->foto)}}" alt="photo" width="100%"></td>
                             <td>{{ $u->name }}</td>
                             <td>{{ $u->role->nama_role }}</td>
 
@@ -95,18 +97,21 @@
                                 <td style="color: var(--primary); font-weight: 500;">{{ $u->status }}</td>
                             @endif
                             {{-- <td>{{$}}</td> --}}
-                            <td class="flex flex-center align-center gap10">
+                            <td>
+                                <div class="flex flex-center align-center gap10">
                                 <form action="{{ route('admin.regeneratePass', $u->id) }}" method="post"
                                     onclick="return confirm('Yakin ingin mengatur ulang password pengguna ini?')">
                                     @csrf
                                     <button type="submit" class="btn-blue">reset password</button>
                                 </form>
+                                <a href="{{route('admin.editAkun', $u->id)}}" class="btn-yellow text-small">edit</a>
                                 <form action="{{ route('admin.hapusPengguna', $u->id) }}" method="post"
                                     onclick="return confirm('Yakin ingin menghapus akun pengguna ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-red" onclick="loading()">hapus</button>
                                 </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
