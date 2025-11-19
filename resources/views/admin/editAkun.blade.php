@@ -19,7 +19,7 @@
 
                 <div class="flex flex-end gap10">
                     <a href="{{ route('admin.pengguna') }}" class="btn-red text-small">Batal</a>
-                    <input type="submit" name="" id="" value="Edit" class="btn-yellow w-max" onclick="loading()">
+                    <input type="submit" name="" id="" value="Edit" class="btn-blue w-max" onclick="loading()">
                 </div>
             </form>
         </div>

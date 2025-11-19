@@ -31,6 +31,7 @@
     width: 25%;
     height: 100%;
     background-color: var(--neutral-90);
+    border-radius: 100px;
 }
 
 

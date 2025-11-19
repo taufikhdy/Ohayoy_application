@@ -269,6 +269,10 @@ section.flex {
     width: 50%;
 }
 
+.full-round{
+    border-radius: 100px;
+}
+
 .text-block {
     display: block;
     width: 100%;

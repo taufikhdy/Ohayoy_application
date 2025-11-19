@@ -54,6 +54,7 @@ Route::controller(AdminController::class)->group(function () {
     route::delete('/admin/menu/hapusMenu/{id}', 'hapusMenu')->name('admin.hapusMenu');
     route::post('/admin/menu/editMenu', 'editMenu')->name('admin.editMenu');
     route::get('/admin/menu/ulasanMenu/{id}', 'ulasan')->name('admin.ulasan');
+    route::get('/admin/menu/menu_query', 'cariMenu')->name('admin.cariMenu');
 
     route::post('/admin/menu/status', 'menuStatus')->name('admin.menu.status');
 
@@ -63,6 +64,8 @@ Route::controller(AdminController::class)->group(function () {
     route::post('/admin/meja/tambahMeja', 'tambahMeja')->name('admin.tambahMeja');
     route::delete('/admin/menu/hapusMeja/{id}', 'hapusMeja')->name('admin.hapusMeja');
     route::post('/admin/meja/buatUrl', 'buatUrl')->name('admin.buatUrl');
+
+    route::get('/admin/meja/meja_query', 'cariMeja')->name('admin.cariMeja');
 
     route::get('/admin/meja/printAllQr', 'printAllQr')->name('admin.printAllQr');
     route::get('/admin/meja/print/{id}', 'print')->name('admin.print');
@@ -77,6 +80,8 @@ Route::controller(AdminController::class)->group(function () {
     route::post('/admin/pengguna/tambahPengguna', 'tambahPengguna')->name('admin.tambahPengguna');
     route::delete('/admin/pengguna/hapusPengguna/{id}', 'hapusPengguna')->name('admin.hapusPengguna');
     route::post('/admin/pengguna/pass/{id}', 'regeneratePass')->name('admin.regeneratePass');
+
+    route::get('/admin/pengguna/pengguna_query', 'cariPengguna')->name('admin.cariPengguna');
 
     route::get('/admin/toko', 'toko')->name('admin.toko');
     route::get('/admin/toko/edit', 'editToko')->name('admin.editToko');
@@ -97,6 +102,7 @@ Route::controller(KasirController::class)->group(function () {
     route::post('/kasir/transaksi/resetOrder', 'resetOrder')->name('kasir.resetOrder');
 
     route::get('/kasir/menu', 'menu')->name('kasir.menu');
+    route::get('/kasir/menu/menu_query', 'cariMenu')->name('kasir.cariMenu');
     route::post('/kasir/menu/status', 'menuStatus')->name('kasir.menu.status');
 
     route::get('/kasir/pengguna', 'pengguna')->name('kasir.pengguna');

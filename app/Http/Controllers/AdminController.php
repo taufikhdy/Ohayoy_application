@@ -101,7 +101,7 @@ class AdminController extends Controller
             'transaksi' => Transaksi::count(),
             'pemasukan' => Transaksi::where('tanggal', today())->sum('total_bayar'),
             'pemasukan_bulanan' => Transaksi::whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('total_bayar'),
-            // 'pemasukan_tahunan' => Transaksi::WhereYear('created_at', now()->Year)->sum('total_bayar')
+            'pemasukan_tahunan' => Transaksi::WhereYear('created_at', now()->year)->sum('total_bayar')
         ]);
     }
 
@@ -161,13 +161,16 @@ class AdminController extends Controller
     public function menu()
     {
         $this->admin();
+
+        $query = '';
+
         $kategoris = Kategori::latest()->get();
 
         $menus = Menu::latest()->Paginate(20);
 
         // $menus = Menu::latest()->get();
         $terlaris = Menu::orderBy('penjualan', 'desc')->take(5)->get();
-        return view('admin.menu', compact('kategoris', 'menus', 'terlaris'));
+        return view('admin.menu', compact('query', 'kategoris', 'menus', 'terlaris'));
     }
 
     public function tambahMenu(Request $request)
@@ -244,6 +247,26 @@ class AdminController extends Controller
         $menu->save();
 
         return redirect()->route('admin.menu');
+    }
+
+    public function cariMenu()
+    {
+        $query = request()->query('query');
+
+        $menus = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
+
+        if(!$query){
+            $menus = Menu::latest()->paginate(20);
+        }
+
+        $kategoris = Kategori::latest()->get();
+
+        // $menus = Menu::latest()->Paginate(20);
+
+        // $menus = Menu::latest()->get();
+        $terlaris = Menu::orderBy('penjualan', 'desc')->take(5)->get();
+
+        return view('admin.menu', compact('query', 'menus', 'kategoris', 'terlaris'));
     }
 
 
@@ -341,6 +364,8 @@ class AdminController extends Controller
     {
         $this->admin();
 
+        $query = null;
+
         $role = Roles::all();
 
         $default = Roles::where('nama_role', 'customer')->first();
@@ -380,7 +405,59 @@ class AdminController extends Controller
             ];
         }
 
-        return view('admin.meja', compact('role', 'default', 'qrcode'));
+        return view('admin.meja', compact('query', 'role', 'default', 'qrcode'));
+    }
+
+    public function cariMeja()
+    {
+        $this->admin();
+
+        $query = request()->query('query');
+
+        $role = Roles::all();
+
+        $default = Roles::where('nama_role', 'customer')->first();
+
+        // $meja = Meja::all();
+        // data tersortir berdasarkan tanggal bergantung pada filter meja kalau latest tersusun secara terbaru meski sudah dalam array
+
+
+        $meja = Meja::where('nama_meja', 'like' . '%' . $query . '%')->get();
+
+        if(!$query){
+            $meja = Meja::all();
+        }
+
+        $oldUrl = Meja::orderBy('created_at', 'asc')->first();
+
+        // QR Generator
+        $qrcode = [];
+
+
+        foreach ($meja as $m) {
+            $hash = Hashids::connection('meja')->encode($m->id);
+            if ($m->url) {
+                $url = $m->url;
+            } else {
+                $oldUrl = Meja::whereNotNull('url')->orderBy('created_at', 'asc')->first();
+                $url = $oldUrl ? $oldUrl->url : '/';
+            }
+
+            $m->url = $url;
+            $m->save();
+
+            $urlFull = url($url . '/' . $hash);
+
+
+            // simpan hasil ke array
+            $qrcode[] = [
+                'meja' => $m,
+                'url' => $urlFull,
+                'qr' => QrCode::size(80)->generate($urlFull)
+            ];
+        }
+
+        return view('admin.meja', compact('query', 'role', 'default', 'qrcode'));
     }
 
 
@@ -531,11 +608,29 @@ class AdminController extends Controller
     {
         $this->admin();
 
+        $query = null;
         $id = Auth::user()->id;
         $admin = User::findOrFail($id);
         $role = Roles::all();
         $user = User::all();
-        return view('admin.pengguna', compact('role', 'user', 'admin'));
+        return view('admin.pengguna', compact('query', 'role', 'user', 'admin'));
+    }
+
+    public function cariPengguna()
+    {
+        $this->admin();
+
+        $query = request()->query('query');
+
+        $id = Auth::user()->id;
+        $admin = User::findOrFail($id);
+        $role = Roles::all();
+        $user = User::where('name', 'like', '%' . $query . '%')->get();
+
+        if(!$query){
+            $user = User::all();
+        }
+        return view('admin.pengguna', compact('query', 'role', 'user', 'admin'));
     }
 
     public function editPengguna($id)
@@ -565,7 +660,7 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($user->foto);
                 $user->foto = $request->file('foto')->store('user', 'public');
             }else{
-                $user->foto = $request->file('foto')->store('user', 'public');  
+                $user->foto = $request->file('foto')->store('user', 'public');
             }
         }
 

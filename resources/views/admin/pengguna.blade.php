@@ -63,8 +63,15 @@
         </div>
 
         <div class="container-w1">
-            <div class="element-title">
-                <h3>Data Pengguna</h3>
+            <div class="element-title flex flex-between gap10">
+                <h3 class="w-max">Data Pengguna</h3>
+
+                <form action="{{route('admin.cariPengguna')}}" method="get">
+                <div class="flex flex-between gap10">
+                    <input type="text" name="query" id="" placeholder="Cari pengguna" class="w-max" value="{{$query}}">
+                    <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
+                </div>
+            </form>
             </div>
 
             <div class="table-container">
@@ -87,7 +94,7 @@
                     @foreach ($user as $u)
                         <tr>
                             <td>{{ $no++ }}</td>
-                            <td><img src="{{Storage::url($u->foto)}}" alt="photo" width="100%"></td>
+                            <td><img src="{{Storage::url($u->foto)}}" alt="photo" width="" height="" class="full-round"></td>
                             <td>{{ $u->name }}</td>
                             <td>{{ $u->role->nama_role }}</td>
 

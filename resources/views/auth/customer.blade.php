@@ -25,12 +25,12 @@
                     <div>
                         <div>Selamat Datang Di Ohayoy</div>
                         <h1>Kamu berada di {{ Auth::guard('meja')->user()->nama_meja }}</h1>
-                        <div class="text-small">Yuk, isi username dengan username pilihan kamu, username ini digunakan untuk pesanan kamu nanti </p>
+                        <div class="text-small">Yuk, isi nama pengguna dengan nama pilihan kamu, nama pengguna  ini digunakan untuk nama penerima pesanan kamu nanti </p>
                     </div>
 
                     <br>
 
-                    <input type="text" name="username" id="" placeholder="Username : minimal 5 karakter"
+                    <input type="text" name="username" id="" placeholder="Nama pengguna : minimal 5 karakter"
                         autocomplete="off" minlength="5" maxlength="12">
                     <input type="submit" name="" id="" value="Masuk">
                 </div>

@@ -83,10 +83,18 @@
         </div>
 
         <div class="container-w1">
-            <div class="flex align-center flex-between">
+            <div class="flex align-center flex-between gap10">
                 <div class="element-title">
-                    <h3>Tabel Menu</h3>
+                    <h3 class="w-max">Tabel Menu</h3>
                 </div>
+
+                <form action="{{route('admin.cariMenu')}}" method="get">
+                    <div class="flex flex-between gap10">
+                        <input type="text" name="query" id="" placeholder="Cari menu" class="w-100" value="{{$query}}">
+                        <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
+                    </div>
+                </form>
+
                 {{-- <div class="flex align-center gap10">
                     <button>Terlaris</button>
                     <button>Terbaru</button>
@@ -154,7 +162,7 @@
                                             </option>
 
                                             @foreach ($kategoris as $k)
-                                                <option value="{{$k->id}}">{{$k->nama_kategori}}</option>
+                                                <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
                                             @endforeach
                                         </select>
                                     </td>

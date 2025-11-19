@@ -182,9 +182,24 @@ class KasirController extends Controller
     {
         $this->kasir();
 
+        $query = null;
         // $menus = Menu::latest()->get();
         $menus = Menu::latest()->paginate(20);
-        return view('kasir.menu', compact('menus'));
+        return view('kasir.menu', compact('query', 'menus'));
+    }
+
+    public function cariMenu()
+    {
+        $this->kasir();
+        $query = request()->query('query');
+
+        $menus = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
+
+        if(!$query){
+            $menus = Menu::latest()->paginate(20);
+        }
+
+        return view('kasir.menu', compact('query', 'menus'));
     }
 
     public function menuStatus(Request $request)
@@ -208,8 +223,9 @@ class KasirController extends Controller
     {
         $this->kasir();
 
-        $id = Auth::user()?->id;
-        $transaksi = Transaksi::where('kasir_id', $id)->where('created_at', today())->count();
-        return view('kasir.pengguna', compact('transaksi'));
+        $id = Auth::user()->id;
+        $kasir = User::findOrFail($id);
+        $transaksi = Transaksi::where('kasir_id', $kasir->id)->whereDate('created_at', today())->count();
+        return view('kasir.pengguna', compact('kasir', 'transaksi'));
     }
 }

@@ -5,14 +5,14 @@
 @section('content')
 
     <div class="content">
-        <div class="container-w1">
+        <div class="container-w2">
             <div class="profile-card">
                 <div class="profile-title">
                     <h3>Profil</h3>
                 </div>
 
                 <div class="profile-content">
-                    <img src="" alt="user photo" class="foto">
+                    <img src="{{ Storage::url($kasir->foto) }}" alt="user photo" class="foto">
 
                     <div class="profile-info w-100">
                         <div class="text-info text-bold">{{ Auth::User()->name }}</div>

@@ -27,7 +27,8 @@
                                     <option value="{{ $r->id }}">{{ $r->nama_role }}</option>
                                 @endforeach
                             </select>
-                            <input type="submit" name="" id="" class="btn-primary" value="Tambah" onclick="loading()">
+                            <input type="submit" name="" id="" class="btn-primary" value="Tambah"
+                                onclick="loading()">
                         </div>
                     </form>
                 </div>
@@ -53,13 +54,20 @@
         </div>
 
 
-        <div class="element-title flex flex-between">
-            <h3>Tabel Meja</h3>
-            <a href="{{route('admin.printAllQr')}}" class="btn-blue">Cetak Semua</a>
+        <div class="element-title flex flex-between gap10">
+            <h3 class="w-max">Tabel Meja</h3>
+            <form action="{{route('admin.cariMeja')}}" method="get">
+                <div class="flex flex-end flex-wrap gap10">
+                    <input type="text" name="query" id="" placeholder="Cari meja" class="w-max" value="{{$query}}">
+                    <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
+                    <a href="{{ route('admin.printAllQr') }}" class="btn-primary text-small w-ma">Cetak Semua</a>
+                </div>
+            </form>
         </div>
 
         <div class="container-w1">
-
+            {{-- <div class="flex flex-end mb10">
+            </div> --}}
             <div class="table-container">
                 <table class="table">
 
@@ -105,7 +113,7 @@
 
                                 <td>
                                     <div class="flex align-center flex-center gap10">
-                                        <a href="{{route('admin.print', $data['meja']->id)}}" class="btn-blue">Cetak</a>
+                                        <a href="{{ route('admin.print', $data['meja']->id) }}" class="btn-blue">Cetak</a>
                                         <form action="{{ route('admin.hapusMeja', $data['meja']->id) }}" method="post"
                                             onclick="return confirm('Yakin ingin menghapus meja ini?')">
                                             @csrf

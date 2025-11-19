@@ -7,10 +7,17 @@
     <div class="content">
 
         <div class="container-w1">
-            <div class="flex align-center flex-between">
+            <div class="flex align-center flex-between gap10">
                 <div class="element-title">
                     <h3>Tabel Menu</h3>
                 </div>
+
+                <form action="{{route('kasir.cariMenu')}}" method="get">
+                    <div class="flex flex-between gap10">
+                        <input type="text" name="query" id="" placeholder="Cari menu" class="w-100" value="{{$query}}">
+                        <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
+                    </div>
+                </form>
                 {{-- <div class="flex align-center gap10">
                     <button>Terlaris</button>
                     <button>Terbaru</button>
