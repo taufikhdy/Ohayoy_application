@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
 
+            $table->enum('request', ['nothing', 'request'])->default('nothing');
+
             $table->timestamps();
         });
     }

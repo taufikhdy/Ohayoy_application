@@ -161,7 +161,7 @@ class KasirController extends Controller
 
         $mejaId = $request->meja_id;
 
-        $meja = meja::findOrFail($mejaId);
+        $meja = Meja::findOrFail($mejaId);
         $meja->update([
             'username' => null,
             'status' => 'kosong'

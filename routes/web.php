@@ -25,13 +25,17 @@ Route::controller(OfficeController::class)->group(function () {
 
 Route::middleware(['web'])->group(function () {
     Route::controller(AuthCustomerController::class)->group(function () {
+
         route::get('/log/customer/{hash}', 'loginByQr')->name('loginByQr');
+        route::post('/log/customer/{id}/resetMeja', 'resetMeja')->name('resetRequest'); //RESET MEJA
+
         // route::post('/authenticate', 'authenticate')->name('authenticate');
         route::post('/customer/logout', 'logout')->name('customer.logout');
 
         route::get('/wrongHours', 'wrongHours')->name('wrongHours');
         route::get('/wrongway', 'wrongway')->name('wrongway');
         route::get('/thankyou', 'thankyou')->name('thankyou');
+
     });
 });
 
@@ -60,6 +64,8 @@ Route::controller(AdminController::class)->group(function () {
 
     route::get('/admin/meja/data', 'mejaData');
     route::get('/admin/meja', 'meja')->name('admin.meja');
+    route::get('/admin/customer_request', 'mejaRequest')->name('admin.meja_request');
+    route::post('/admin/customer_request/reset', 'mejaReset')->name('admin.resetMeja');
 
     route::post('/admin/meja/tambahMeja', 'tambahMeja')->name('admin.tambahMeja');
     route::delete('/admin/menu/hapusMeja/{id}', 'hapusMeja')->name('admin.hapusMeja');
@@ -115,6 +121,7 @@ Route::middleware(['web', 'auth:meja'])->group(function () {
     Route::controller(CustomerController::class)->middleware(['checkMejaStatus'])->group(function () { //middleware(['checkMejaStatus'])->
         Route::get('/customer/validation', 'usernameForm')->name('customer.form');
         Route::post('/customer/confirm', 'usernameValid')->name('customer.username.valid');
+
         Route::get('/customer/dashboard', 'dashboard')->name('customer.dashboard');
 
         Route::get('/customer/menu/detailMenu/{id}', 'detailMenu')->name('customer.detailMenu');

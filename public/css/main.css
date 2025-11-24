@@ -269,6 +269,14 @@ section.flex {
     width: 50%;
 }
 
+.h-max{
+    height: max-content;
+}
+
+.h-fit{
+    height: fit-content;
+}
+
 .full-round{
     border-radius: 100px;
 }

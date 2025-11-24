@@ -66,9 +66,10 @@ class CustomerController extends Controller
         $toko = Toko::latest()->first();
         $jam = Jam::all();
         $keranjang = Keranjang::where('meja_id', Auth::guard('meja')->user()->id)->sum('meja_id');
+        $kategoris = Kategori::inRandomOrder()->limit(6)->get();
         // $menu = Menu::latest()->get();
 
-        return view('customer.dashboard', compact('menu', 'toko', 'jam', 'keranjang'));
+        return view('customer.dashboard', compact('menu', 'toko', 'jam', 'keranjang', 'kategoris'));
     }
 
     public function detailMenu($id)

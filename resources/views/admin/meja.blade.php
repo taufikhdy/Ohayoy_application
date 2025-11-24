@@ -104,7 +104,7 @@
                                 @endif
 
                                 @if ($data['meja']->status === 'terisi')
-                                    <td>{{ $data['meja']->username }}</td>
+                                    <td style="color: var(--primary); font-weight: 500;">{{ $data['meja']->username }}</td>
                                     <td style="color: crimson; font-weight: 500;">{{ $data['meja']->status }}</td>
                                 @elseif ($data['meja']->status === 'kosong')
                                     <td>kosong</td>

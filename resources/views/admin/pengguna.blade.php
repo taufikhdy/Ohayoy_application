@@ -20,13 +20,14 @@
                     </div>
 
                     <div class="profile-content">
-                        <img src="{{Storage::url($admin->foto)}}" alt="user photo" class="foto">
+                        <img src="{{ Storage::url($admin->foto) }}" alt="user photo" class="foto">
 
                         <div class="profile-info w-100">
                             <div class="text-info text-bold">{{ Auth::User()->name }}</div>
                             <div class="text-info">Role Pengguna</div>
                             <div class="text-info text-bold">{{ Auth::user()->role->nama_role }}</div>
-                            <div class="flex flex-end link w-100"><a href="{{route('admin.editAkun', Auth::user()?->id)}}" class="btn-blue">Edit</a></div>
+                            <div class="flex flex-end link w-100"><a href="{{ route('admin.editAkun', Auth::user()?->id) }}"
+                                    class="btn-blue">Edit</a></div>
                         </div>
                     </div>
                 </div>
@@ -66,62 +67,71 @@
             <div class="element-title flex flex-between gap10">
                 <h3 class="w-max">Data Pengguna</h3>
 
-                <form action="{{route('admin.cariPengguna')}}" method="get">
-                <div class="flex flex-between gap10">
-                    <input type="text" name="query" id="" placeholder="Cari pengguna" class="w-max" value="{{$query}}">
-                    <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
-                </div>
-            </form>
+                <form action="{{ route('admin.cariPengguna') }}" method="get">
+                    <div class="flex flex-between gap10">
+                        <input type="text" name="query" id="" placeholder="Cari pengguna" class="w-100"
+                            value="{{ $query }}">
+                        <input type="submit" name="" id="" value="Cari" class="btn-primary w-max">
+                    </div>
+                </form>
             </div>
 
             <div class="table-container">
                 <table class="table p10">
-                    <tr>
-                        <th>No</th>
-                        <th>Foto</th>
-                        <th>Nama Pengguna</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        {{-- <th>Key</th> --}}
-                        <th>Aksi</th>
-                    </tr>
-
-
-                    @php
-                        $no = 1;
-                    @endphp
-
-                    @foreach ($user as $u)
+                    @if ($user->isEmpty())
                         <tr>
-                            <td>{{ $no++ }}</td>
-                            <td><img src="{{Storage::url($u->foto)}}" alt="photo" width="" height="" class="full-round"></td>
-                            <td>{{ $u->name }}</td>
-                            <td>{{ $u->role->nama_role }}</td>
-
-                            @if ($u->status === 'offline')
-                                <td style="color: crimson; font-weight: 500;">{{ $u->status }}</td>
-                            @elseif ($u->status === 'online')
-                                <td style="color: var(--primary); font-weight: 500;">{{ $u->status }}</td>
-                            @endif
-                            {{-- <td>{{$}}</td> --}}
-                            <td>
-                                <div class="flex flex-center align-center gap10">
-                                <form action="{{ route('admin.regeneratePass', $u->id) }}" method="post"
-                                    onclick="return confirm('Yakin ingin mengatur ulang password pengguna ini?')">
-                                    @csrf
-                                    <button type="submit" class="btn-blue">reset password</button>
-                                </form>
-                                <a href="{{route('admin.editAkun', $u->id)}}" class="btn-yellow text-small">edit</a>
-                                <form action="{{ route('admin.hapusPengguna', $u->id) }}" method="post"
-                                    onclick="return confirm('Yakin ingin menghapus akun pengguna ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-red" onclick="loading()">hapus</button>
-                                </form>
-                                </div>
-                            </td>
+                            <p class="text-center">Belum ada data pengguna</p>
                         </tr>
-                    @endforeach
+                    @else
+                        <tr>
+                            <th>No</th>
+                            <th>Foto</th>
+                            <th>Nama Pengguna</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            {{-- <th>Key</th> --}}
+                            <th>Aksi</th>
+                        </tr>
+
+
+                        @php
+                            $no = 1;
+                        @endphp
+
+                        @foreach ($user as $u)
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td><img src="{{ Storage::url($u->foto) }}" alt="photo" width="" height=""
+                                        class="full-round"></td>
+                                <td>{{ $u->name }}</td>
+                                <td>{{ $u->role->nama_role }}</td>
+
+                                @if ($u->status === 'offline')
+                                    <td style="color: crimson; font-weight: 500;">{{ $u->status }}</td>
+                                @elseif ($u->status === 'online')
+                                    <td style="color: var(--primary); font-weight: 500;">{{ $u->status }}</td>
+                                @endif
+                                {{-- <td>{{$}}</td> --}}
+                                <td>
+                                    <div class="flex flex-center align-center gap10">
+                                        <form action="{{ route('admin.regeneratePass', $u->id) }}" method="post"
+                                            onclick="return confirm('Yakin ingin mengatur ulang password pengguna ini?')">
+                                            @csrf
+                                            <button type="submit" class="btn-blue">reset password</button>
+                                        </form>
+                                        <a href="{{ route('admin.editAkun', $u->id) }}"
+                                            class="btn-yellow text-small">edit</a>
+                                        <form action="{{ route('admin.hapusPengguna', $u->id) }}" method="post"
+                                            onclick="return confirm('Yakin ingin menghapus akun pengguna ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-red" onclick="loading()">hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </table>
             </div>
 

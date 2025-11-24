@@ -162,9 +162,9 @@ class AdminController extends Controller
     {
         $this->admin();
 
-        $query = '';
-
         $kategoris = Kategori::latest()->get();
+
+        $query = '';
 
         $menus = Menu::latest()->Paginate(20);
 
@@ -256,7 +256,7 @@ class AdminController extends Controller
         $menus = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
 
         if(!$query){
-            $menus = Menu::latest()->paginate(20);
+            return redirect()->route('admin.menu');
         }
 
         $kategoris = Kategori::latest()->get();
@@ -364,7 +364,7 @@ class AdminController extends Controller
     {
         $this->admin();
 
-        $query = null;
+        $query = '';
 
         $role = Roles::all();
 
@@ -421,12 +421,12 @@ class AdminController extends Controller
         // $meja = Meja::all();
         // data tersortir berdasarkan tanggal bergantung pada filter meja kalau latest tersusun secara terbaru meski sudah dalam array
 
-
-        $meja = Meja::where('nama_meja', 'like' . '%' . $query . '%')->get();
-
         if(!$query){
-            $meja = Meja::all();
+            return redirect()->route('admin.meja');
         }
+
+        $meja = Meja::where('nama_meja', 'like', '%' . $query . '%')->get();
+
 
         $oldUrl = Meja::orderBy('created_at', 'asc')->first();
 
@@ -458,6 +458,35 @@ class AdminController extends Controller
         }
 
         return view('admin.meja', compact('query', 'role', 'default', 'qrcode'));
+    }
+
+
+    public function mejaRequest()
+    {
+        $this->admin();
+
+        $mejaAktif = Meja::where('status', 'terisi')->orderBy('updated_at', 'desc')->get();
+
+        return view('admin.meja_request', compact('mejaAktif'));
+    }
+
+    public function mejaReset(Request $request)
+    {
+        $this->admin();
+
+        $request->validate([
+            'meja_id' => 'required|exists:meja,id'
+        ]);
+
+        $meja = Meja::findOrFail($request->meja_id);
+
+        $meja->update([
+            'username' => null,
+            'status' => 'kosong'
+        ]);
+        $meja->save();
+
+        return redirect()->route('admin.meja_request');
     }
 
 
@@ -628,7 +657,7 @@ class AdminController extends Controller
         $user = User::where('name', 'like', '%' . $query . '%')->get();
 
         if(!$query){
-            $user = User::all();
+            return redirect()->route('admin.pengguna');
         }
         return view('admin.pengguna', compact('query', 'role', 'user', 'admin'));
     }

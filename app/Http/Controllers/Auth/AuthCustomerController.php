@@ -64,6 +64,8 @@ class AuthCustomerController extends Controller
 
         if (!$meja) {
             return view('components.wrongway');
+        } elseif ($meja && $meja->status === 'terisi' && $meja->username == !null){
+            return view('components.mejaFilled', compact('id'));
         }
 
 
@@ -98,6 +100,20 @@ class AuthCustomerController extends Controller
         // }
 
         return redirect()->route('customer.dashboard');
+    }
+
+    public function resetMeja(Request $request)
+    {
+        $request->validate([
+            'meja_id' => 'required'
+        ]);
+
+        $meja = Meja::findOrFail($request->id);
+
+        $meja->request = 'request';
+        $meja->save();
+
+        return redirect()->back();
     }
 
     public function logout(Request $request): RedirectResponse

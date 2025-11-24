@@ -9,12 +9,14 @@
         <a href="{{ route('admin.kategoriMenu') }}"
             class="{{ Request::is('admin/kategori_menu*') ? 'active' : '' }}">Kategori</a>
         <a href="{{ route('admin.meja') }}" class="{{ Request::is('admin/meja*') ? 'active' : '' }}">Meja</a>
+        <a href="{{ route('admin.meja_request') }}"
+            class="{{ Request::is('admin/customer_request*') ? 'active' : '' }}">Request</a>
         <a href="{{ route('admin.jam') }}" class="{{ Request::is('admin/jam*') ? 'active' : '' }}">Operasional</a>
         <a href="{{ route('admin.pengguna') }}"
             class="{{ Request::is('admin/pengguna*') ? 'active' : '' }}">Pengguna</a>
-        <a href="{{ route('admin.toko') }}"
-            class="{{ Request::is('admin/toko*') ? 'active' : '' }}">Tentang Toko</a>
+        <a href="{{ route('admin.toko') }}" class="{{ Request::is('admin/toko*') ? 'active' : '' }}">Tentang Toko</a>
 
+        <a href="#">Database</a>
 
         <form action="{{ route('logout') }}" method="post"
             onsubmit="return confirm('Apakah anda yakin ingin keluar dari akun?')">
@@ -28,7 +30,8 @@
         <a href="{{ route('kasir.transaksi') }}"
             class="{{ Request::is('kasir/transaksi*') ? 'active' : '' }}">Transaksi</a>
         <a href="{{ route('kasir.menu') }}" class="{{ Request::is('kasir/menu*') ? 'active' : '' }}">Menu</a>
-        <a href="{{ route('kasir.pengguna') }}" class="{{ Request::is('kasir/pengguna*') ? 'active' : '' }}">Pengguna</a>
+        <a href="{{ route('kasir.pengguna') }}"
+            class="{{ Request::is('kasir/pengguna*') ? 'active' : '' }}">Pengguna</a>
 
 
         <form action="{{ route('logout') }}" method="post"

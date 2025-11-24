@@ -40,7 +40,7 @@
             <a href="{{ route('customer.detailMenu', $m->id) }}" class="menu-box gap15">
                 <div class="gambar">
                     {{-- <span class="badge-sm">{{$m->kategori->nama_kategori}}</span> --}}
-                    <img src="{{ asset('storage/' . $m->foto) }}" alt="" class="object-fit">
+                    <img src="{{ asset('storage/' . $m->foto) }}" alt="{{'imgFor' . $m->nama_menu }}" class="object-fit">
                 </div>
 
                 <div class="w100">
@@ -69,17 +69,11 @@
     </div>
 
     <div class="container-w6 gap15">
-        <a href="" class="box">
-            <h4>Manis</h4>
-        </a>
-
-        <a href="" class="box">
-            <h4>Gurih</h4>
-        </a>
-
-        <a href="" class="box">
-            <h4>Murah</h4>
-        </a>
+        @foreach ($kategoris as $kategori)
+            <a href="{{route('customer.cariKategori', $kategori->id)}}" class="box">
+                <h4>{{$kategori->nama_kategori}}</h4>
+            </a>
+        @endforeach
     </div>
 
     {{-- <div class="footer {{ Request::is('/customer/dashboard') ? 'on' : '' }}"> --}}
