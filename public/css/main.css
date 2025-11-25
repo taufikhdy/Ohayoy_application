@@ -94,7 +94,7 @@ section.flex {
 }
 
 .flex.align-bottom {
-    align-items: last baseline;
+    align-items: end;
 }
 
 .flex-start {
@@ -165,27 +165,27 @@ section.flex {
     margin-bottom: 40px;
 }
 
-.p5{
+.p5 {
     padding: 5px;
 }
 
-.p10{
+.p10 {
     padding: 10px;
 }
 
-.p15{
+.p15 {
     padding: 15px;
 }
 
-.p20{
+.p20 {
     padding: 20px;
 }
 
-.p25{
+.p25 {
     padding: 25px;
 }
 
-.p30{
+.p30 {
     padding: 30px;
 }
 
@@ -199,6 +199,22 @@ section.flex {
 
 .gap20 {
     gap: 20px;
+}
+
+.gap25{
+    gap: 25;
+}
+
+.gap30{
+    gap: 30px;
+}
+
+.gap35{
+    gap: 35px;
+}
+
+.gap40{
+    gap: 40px;
 }
 
 .text-large {
@@ -237,6 +253,10 @@ section.flex {
     text-wrap: wrap;
 }
 
+.text-nowrap {
+    text-wrap: nowrap;
+}
+
 .overflow {
     overflow: scroll;
 }
@@ -249,6 +269,10 @@ section.flex {
     overflow-x: scroll;
 }
 
+.non-overflow {
+    overflow: hidden;
+}
+
 .w-max {
     width: max-content;
 }
@@ -257,7 +281,7 @@ section.flex {
     width: fit-content;
 }
 
-.w-100vw{
+.w-100vw {
     width: 100vw;
 }
 
@@ -265,19 +289,19 @@ section.flex {
     width: 100%;
 }
 
-.w-50{
+.w-50 {
     width: 50%;
 }
 
-.h-max{
+.h-max {
     height: max-content;
 }
 
-.h-fit{
+.h-fit {
     height: fit-content;
 }
 
-.full-round{
+.full-round {
     border-radius: 100px;
 }
 
@@ -700,6 +724,7 @@ table.p10 td {
 .table-container {
     width: 100%;
     overflow-x: auto;
+    padding-bottom: 12px;
     /* position: relative; */
 }
 
@@ -725,8 +750,51 @@ table.p10 td {
     z-index: 70;
 }
 
+.popMenu {
+    position: fixed;
+    z-index: 80;
+    bottom: 40px;
+    right: 30px;
+    background-color: var(--primary);
+    padding: 15px;
+    border-radius: 20px;
+}
 
+.popMenu i {
+    color: white;
+    font-weight: 900;
+}
 
+.popData {
+    position: fixed;
+    z-index: 81;
+    bottom: 40px;
+    right: 30px;
+    /* display: none;    */
+    /* background-color: var(--primary); */
+    /* border-radius: 10px; */
+}
+
+.popData a{
+    background-color: var(--primary);
+    padding: 10px;
+    border-radius: 10px;
+    display: none;
+}
+
+.popData form{
+    display: none;
+}
+
+.popData a.active,
+.popData .active form{
+    display: inline;
+}
+
+.popData *:not(input){
+    color: white;
+    /* font-weight: 900; */
+}
 
 @media screen and (min-width:0px) and (max-width: 500px) {
 

@@ -57,6 +57,10 @@
     animation: bounce .5s infinite;
 }
 
+.warning-color{
+    animation: warningColor .8s infinite;
+}
+
 @keyframes bounce {
     0%{
         transform: scale(1);
@@ -113,5 +117,15 @@
 
     100%{
         transform: translateY(0%);
+    }
+}
+
+@keyframes warningColor {
+    0%{
+        background-color: white;
+    }
+
+    100%{
+        background-color: hsla(348, 83%, 47%, 0.7);
     }
 }

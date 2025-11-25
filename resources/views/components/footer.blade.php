@@ -1,5 +1,5 @@
 <footer>
-    <div class="container-w4 w100 gap25">
+    <div class="container-w4 w100 gap30">
         <div class="">
             <a href="http://cafe_web.test/customer/dashboard" class="">
                 <h1>Ohayoy</h1>

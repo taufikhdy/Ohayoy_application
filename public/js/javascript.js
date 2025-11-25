@@ -91,6 +91,7 @@ function saveDesc() {
     closeModal();
 }
 
+
 const editKategori = document.querySelectorAll('.editKategori');
 
 editKategori.forEach(editKategori => {

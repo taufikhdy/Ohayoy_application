@@ -43,10 +43,10 @@
             </div>
         </div>
 
-        <div class="flex flex-end align-center w-100">
+        {{-- <div class="flex flex-end align-center w-100">
             <a href="{{ route('admin.exportTransaksi') }}" class="btn-blue mb15"><i class="ri-file-download-line white"></i>
                 Export Data</a>
-        </div>
+        </div> --}}
 
         <div class="container-w1">
             <div class="table-container">

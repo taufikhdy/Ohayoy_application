@@ -16,7 +16,8 @@
             class="{{ Request::is('admin/pengguna*') ? 'active' : '' }}">Pengguna</a>
         <a href="{{ route('admin.toko') }}" class="{{ Request::is('admin/toko*') ? 'active' : '' }}">Tentang Toko</a>
 
-        <a href="#">Database</a>
+        <a href="{{ route('admin.database') }}"
+            class="{{ Request::is('admin/database*') ? 'active' : '' }}">Database</a>
 
         <form action="{{ route('logout') }}" method="post"
             onsubmit="return confirm('Apakah anda yakin ingin keluar dari akun?')">
@@ -27,6 +28,8 @@
     @elseif(Auth::user()?->role->id === 2)
         <div class="text-right"><i id="btn-close" class="ri-2x ri-close-fill trigger"></i></div>
         <a href="{{ route('kasir.pesanan') }}" class="{{ Request::is('kasir/pesanan*') ? 'active' : '' }}">Pesanan</a>
+        <a href="{{ route('kasir.meja_request') }}"
+            class="{{ Request::is('kasir/customer_request*') ? 'active' : '' }}">Request</a>
         <a href="{{ route('kasir.transaksi') }}"
             class="{{ Request::is('kasir/transaksi*') ? 'active' : '' }}">Transaksi</a>
         <a href="{{ route('kasir.menu') }}" class="{{ Request::is('kasir/menu*') ? 'active' : '' }}">Menu</a>

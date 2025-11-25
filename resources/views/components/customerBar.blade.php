@@ -1,5 +1,5 @@
 <nav class="top-navbar toBottom">
-    <div class="flex align-center gap10">
+    <div class="flex align-center">
         <div id="btnside">
             <i class="ri-lg ri-menu-fill trigger"></i>
         </div>
@@ -28,7 +28,7 @@
 
     <div class="flex align-center gap10">
         <div class="text-right">
-            <h3>{{ Auth::guard('meja')->user()->username }}</h3>
+            <h4>{{ Auth::guard('meja')->user()->username }}</h4>
             <p class="text-small">{{ Auth::guard('meja')->user()->role->nama_role }}</p>
         </div>
 

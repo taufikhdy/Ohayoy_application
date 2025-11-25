@@ -1,10 +1,10 @@
 <nav class="top-navbar">
-    <div class="flex align-center gap10">
+    <div class="flex align-center">
         <div id="btnside">
             <i class="ri-lg ri-menu-fill trigger"></i>
         </div>
         <div class="logo">
-            <h3>Ohayoy</h3>
+            <h4>Ohayoy</h4>
         </div>
     </div>
 

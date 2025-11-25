@@ -48,13 +48,17 @@
             font-weight: 600;
 
         }
+
+        .w80{
+            width: 80%
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
-        <div class="text-center">
+        <div class="text-center w80">
             <h1>(┬┬﹏┬┬)</h1>
             <br>
             <h3>Ups! Meja lagi diisi</h3>
@@ -64,8 +68,10 @@
             <p>
                 <h4>atau</h4>
                 <br>
-                Klik tombol "request reset" untuk mengirim permintaan mengosongkan jika status meja terisi tapi tidak ada
-                orang
+                Klik tombol "request reset" untuk mengirim permintaan mengosongkan jika status meja terisi tapi meja sudah kosong / tidak ada orang. <br>
+                Sambil menunggu coba refresh/reload halaman untuk beberapa saat 🤗.
+                <br>
+                Kami mohon maaf 🙏
                 <br>
                 <br>
                 <form action="{{route('resetRequest', $id)}}" method="post">

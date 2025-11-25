@@ -122,12 +122,12 @@ class AdminController extends Controller
         return view('admin.dataTransaksi', compact('transaksi', 'data', 'pemasukan', 'pemasukan_bulanan', 'transaksiAll'));
     }
 
-    public function exportTransaksi()
-    {
-        $this->admin();
+    // public function exportTransaksi()
+    // {
+    //     $this->admin();
 
-        return Excel::download(new TransaksiExport, 'OHAYOY_DATA_TRANSAKSI.xlsx');
-    }
+    //     return Excel::download(new TransaksiExport, 'OHAYOY_DATA_TRANSAKSI.xlsx');
+    // }
 
 
     public function kategoriMenu()
@@ -223,23 +223,24 @@ class AdminController extends Controller
         ]);
 
 
-        $menu = Menu::where('id', $request->menu_id)->first();
+        $menu = Menu::findOrFail($request->menu_id);
 
 
         if ($request->hasFile('foto')) {
             if ($menu->foto && Storage::exists($menu->foto)) {
-                Storage::delete($menu->foto);
-                $path = $request->file('foto')->store('menu', 'public');
-                $menu->foto = $path;
+                Storage::disk('public')->delete($menu->foto);
             };
-        } elseif ($request->hasFile('foto') === '') {
-            if ($menu->foto && Storage::exists($menu->foto)) {
-                $path = $menu->foto;
-                $menu->foto = $path;
-            }
         }
+        // } elseif ($request->hasFile('foto') === '') {
+        //     if ($menu->foto && Storage::exists($menu->foto)) {
+        //         $path = $menu->foto;
+        //         $menu->foto = $path;
+        //     }
+        // }
 
         // $menu->foto = $path;
+        $path = $request->file('foto')->store('menu', 'public');
+        $menu->foto = $path;
         $menu->nama_menu = $request->nama_menu;
         $menu->harga = $request->harga;
         $menu->deskripsi = $request->deskripsi;
@@ -255,7 +256,7 @@ class AdminController extends Controller
 
         $menus = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
 
-        if(!$query){
+        if (!$query) {
             return redirect()->route('admin.menu');
         }
 
@@ -421,7 +422,7 @@ class AdminController extends Controller
         // $meja = Meja::all();
         // data tersortir berdasarkan tanggal bergantung pada filter meja kalau latest tersusun secara terbaru meski sudah dalam array
 
-        if(!$query){
+        if (!$query) {
             return redirect()->route('admin.meja');
         }
 
@@ -484,6 +485,22 @@ class AdminController extends Controller
             'username' => null,
             'status' => 'kosong'
         ]);
+        $meja->save();
+
+        return redirect()->route('admin.meja_request');
+    }
+
+    public function rejectMejaReset(Request $request)
+    {
+        $this->admin();
+
+        $request->validate([
+            'meja_id' => 'required'
+        ]);
+
+        $meja = Meja::findorFail($request->meja_id);
+
+        $meja->request = 'nothing';
         $meja->save();
 
         return redirect()->route('admin.meja_request');
@@ -656,7 +673,7 @@ class AdminController extends Controller
         $role = Roles::all();
         $user = User::where('name', 'like', '%' . $query . '%')->get();
 
-        if(!$query){
+        if (!$query) {
             return redirect()->route('admin.pengguna');
         }
         return view('admin.pengguna', compact('query', 'role', 'user', 'admin'));
@@ -688,7 +705,7 @@ class AdminController extends Controller
             if ($user->foto) {
                 Storage::disk('public')->delete($user->foto);
                 $user->foto = $request->file('foto')->store('user', 'public');
-            }else{
+            } else {
                 $user->foto = $request->file('foto')->store('user', 'public');
             }
         }
@@ -794,5 +811,87 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.toko');
+    }
+
+
+
+    public function database()
+    {
+        $this->admin();
+
+        $transaksi = Transaksi::latest()->take(5)->get();
+        $menu = Menu::latest()->take(5)->get();
+        $pengguna = User::latest()->take(5)->get();
+
+        return view('admin.database', compact('transaksi', 'menu', 'pengguna'));
+    }
+
+    public function databaseMenu()
+    {
+        $this->admin();
+
+        $query = '';
+        $menu = Menu::latest()->get();
+
+        return view('admin.database_menu', compact('query', 'menu'));
+    }
+
+    public function databaseMenuQuery()
+    {
+        $query = request()->query('query');
+
+        $menu = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
+
+        if (!$query) {
+            return redirect()->route('admin.databaseMenu');
+        }
+
+        return view('admin.database_menu', compact('query', 'menu'));
+    }
+
+    public function databaseTransaksi()
+    {
+        $this->admin();
+
+        $query = '';
+        $transaksi = Transaksi::latest()->get();
+
+        return view('admin.database_transaksi', compact('query', 'transaksi'));
+    }
+
+    public function databaseTransaksiQuery()
+    {
+        $query = request()->query('query');
+
+        $transaksi = Transaksi::where('no_struk', 'like', $query . '%')->latest()->paginate(20);
+
+        if (!$query) {
+            return redirect()->route('admin.databaseTransaksi');
+        }
+
+        return view('admin.database_transaksi', compact('query', 'transaksi'));
+    }
+
+    public function databasePengguna()
+    {
+        $this->admin();
+
+        $query = '';
+        $pengguna = User::latest()->get();
+
+        return view('admin.database_pengguna', compact('query', 'pengguna'));
+    }
+
+    public function databasePenggunaQuery()
+    {
+        $query = request()->query('query');
+
+        $pengguna = User::where('name', 'like', '%' . $query . '%')->latest()->paginate(20);
+
+        if (!$query) {
+            return redirect()->route('admin.databasePengguna');
+        }
+
+        return view('admin.database_Pengguna', compact('query', 'pengguna'));
     }
 }

@@ -228,4 +228,49 @@ class KasirController extends Controller
         $transaksi = Transaksi::where('kasir_id', $kasir->id)->whereDate('created_at', today())->count();
         return view('kasir.pengguna', compact('kasir', 'transaksi'));
     }
+
+
+    public function mejaRequest()
+    {
+        $this->kasir();
+
+        $mejaAktif = Meja::where('status', 'terisi')->orderBy('updated_at', 'desc')->get();
+
+        return view('kasir.meja_request', compact('mejaAktif'));
+    }
+
+    public function mejaReset(Request $request)
+    {
+        $this->kasir();
+
+        $request->validate([
+            'meja_id' => 'required|exists:meja,id'
+        ]);
+
+        $meja = Meja::findOrFail($request->meja_id);
+
+        $meja->update([
+            'username' => null,
+            'status' => 'kosong'
+        ]);
+        $meja->save();
+
+        return redirect()->route('kasir.meja_request');
+    }
+
+    public function rejectMejaReset(Request $request)
+    {
+        $this->kasir();
+
+        $request->validate([
+            'meja_id' => 'required'
+        ]);
+
+        $meja = Meja::findorFail($request->meja_id);
+
+        $meja->request = 'nothing';
+        $meja->save();
+
+        return redirect()->route('kasir.meja_request');
+    }
 }

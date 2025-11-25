@@ -2,51 +2,42 @@
 
 namespace App\Exports;
 
-use App\Models\Transaksi;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Models\Menu;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithStyles;
 
-class TransaksiExport implements FromQuery, WithHeadings, WithStyles
+
+class MenuExport implements FromQuery, WithHeadings, WithStyles
 {
     // /**
     // * @return \Illuminate\Support\Collection
     // */
     // public function collection()
     // {
-    //     return Transaksi::all();
+    //     return Menu::all();
     // }
-
-    protected $from;
-    protected $to;
-
-    public function __construct($from, $to)
-    {
-        $this->from = $from;
-        $this->to = $to;
-    }
 
     public function query()
     {
-        return Transaksi::query()->select('id', 'no_struk', 'meja_id', 'nama_pelanggan', 'order_id', 'kasir_id', 'nama_kasir', 'total_bayar', 'status_bayar', 'tanggal', 'waktu')->whereBetween('tanggal', [$this->from, $this->to])->orderBy('tanggal', 'desc');
+        return Menu::query()->select('id', 'nama_menu', 'deskripsi', 'harga', 'status_stok', 'penjualan', 'foto', 'kategori_id', 'created_at', 'updated_at')->latest();
     }
 
     public function headings(): array
     {
         return [
-            'ID Transaksi',
-            'Nomor Struk',
-            'ID Meja',
-            'Nama Pelanggan',
-            'ID Order',
-            'ID Kasir',
-            'Nama Kasir',
-            'Total Bayar',
-            'Status Bayar',
-            'Tanggal',
-            'Waktu'
+            'ID',
+            'Nama Menu',
+            'Deskripsi',
+            'Harga',
+            'Status Stok',
+            'Penjualan',
+            'Foto',
+            'ID Kategori',
+            'Tanggal Dibuat',
+            'Tanggal Diubah'
         ];
     }
 
@@ -68,6 +59,4 @@ class TransaksiExport implements FromQuery, WithHeadings, WithStyles
             ],
         ];
     }
-
-
 }

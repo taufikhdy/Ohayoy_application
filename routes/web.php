@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\OfficeController;
 use App\Http\Controllers\Auth\AuthCustomerController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,6 @@ Route::middleware(['web'])->group(function () {
         route::get('/wrongHours', 'wrongHours')->name('wrongHours');
         route::get('/wrongway', 'wrongway')->name('wrongway');
         route::get('/thankyou', 'thankyou')->name('thankyou');
-
     });
 });
 
@@ -66,6 +66,7 @@ Route::controller(AdminController::class)->group(function () {
     route::get('/admin/meja', 'meja')->name('admin.meja');
     route::get('/admin/customer_request', 'mejaRequest')->name('admin.meja_request');
     route::post('/admin/customer_request/reset', 'mejaReset')->name('admin.resetMeja');
+    route::post('/admin/customer_request/reject', 'rejectMejaReset')->name('admin.rejectMeja');
 
     route::post('/admin/meja/tambahMeja', 'tambahMeja')->name('admin.tambahMeja');
     route::delete('/admin/menu/hapusMeja/{id}', 'hapusMeja')->name('admin.hapusMeja');
@@ -92,6 +93,15 @@ Route::controller(AdminController::class)->group(function () {
     route::get('/admin/toko', 'toko')->name('admin.toko');
     route::get('/admin/toko/edit', 'editToko')->name('admin.editToko');
     route::post('/admin/toko/edit/post', 'editTokopost')->name('admin.editTokoPost');
+
+
+    route::get('/admin/database', 'database')->name('admin.database');
+    route::get('/admin/database/menu', 'databaseMenu')->name('admin.databaseMenu');
+    route::get('/admin/database/menu/query', 'databaseMenuQuery')->name('admin.databaseMenuQuery');
+    route::get('/admin/database/transaksi', 'databaseTransaksi')->name('admin.databaseTransaksi');
+    route::get('/admin/database/transaksi/query', 'databaseTransaksiQuery')->name('admin.databaseTransaksiQuery');
+    route::get('/admin/database/pengguna', 'databasePengguna')->name('admin.databasePengguna');
+    route::get('/admin/database/pengguna/query', 'databasePenggunaQuery')->name('admin.databasePenggunaQuery');
 });
 
 
@@ -112,6 +122,11 @@ Route::controller(KasirController::class)->group(function () {
     route::post('/kasir/menu/status', 'menuStatus')->name('kasir.menu.status');
 
     route::get('/kasir/pengguna', 'pengguna')->name('kasir.pengguna');
+
+
+    route::get('/kasir/customer_request', 'mejaRequest')->name('kasir.meja_request');
+    route::post('/kasir/customer_request/reset', 'mejaReset')->name('kasir.resetMeja');
+    route::post('/kasir/customer_request/reject', 'rejectMejaReset')->name('kasir.rejectMeja');
 });
 
 
@@ -142,4 +157,10 @@ Route::middleware(['web', 'auth:meja'])->group(function () {
 
 Route::controller(KeranjangController::class)->group(function () {
     route::post('/customer/menu/detailMenu/tambahMenu', 'tambahKeranjang')->name('customer.tambahMenu');
+});
+
+
+Route::controller(ExportController::class)->group(function () {
+    route::get('/export/data/transaksi', 'exportTransaksi')->name('exportTransaksi');
+    route::get('/export/data/menu', 'exportMenu')->name('exportMenu');
 });

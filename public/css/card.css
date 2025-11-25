@@ -155,3 +155,18 @@
 .modal .close{
     cursor: pointer;
 }
+
+.box-after-gradation{
+    position: relative;
+}
+
+.box-after-gradation::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: linear-gradient(to top, hsla(0, 0%, 100%, 0.7), hsla(0, 0%, 100%, 0));
+}

@@ -16,11 +16,11 @@ use Illuminate\Http\RedirectResponse;
 class OfficeController extends Controller
 {
 
-    public function login(): View
+    public function login()
     {
 
         if (Auth::user()?->role_id === 1) {
-            return view('admin.dashboard');
+            return redirect()->route('admin.report');
         } elseif (Auth::user()?->role_id === 2) {
             return view('kasir.pesanan');
         }

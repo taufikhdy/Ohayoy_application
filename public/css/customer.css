@@ -67,6 +67,7 @@ a.on {
     padding: 20px 10px;
     color: var(--neutral-50);
     font-weight: 500;
+    font-size: medium;
 }
 
 .box-link.active {
