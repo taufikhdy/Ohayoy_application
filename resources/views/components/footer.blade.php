@@ -13,7 +13,7 @@
         <div class="">
             <h4 class="mb20">Pelayanan Pelanggan</h4>
             <a href="" class="block mb10">FAQ</a>
-            <a href="" class="block mb10">Privacy Police</a>
+            {{-- <a href="" class="block mb10">Privacy Police</a> --}}
         </div>
 
         <div class="">

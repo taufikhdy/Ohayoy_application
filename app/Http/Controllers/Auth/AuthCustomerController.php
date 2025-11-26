@@ -64,11 +64,9 @@ class AuthCustomerController extends Controller
 
         if (!$meja) {
             return view('components.wrongway');
-        } elseif ($meja && $meja->status === 'terisi' && $meja->username == !null){
+        } elseif ($meja && $meja->status === 'terisi' && $meja->username !== null){
             return view('components.mejaFilled', compact('id'));
         }
-
-
 
         $request->session()->regenerate();
         Auth::guard('meja')->login($meja);
@@ -113,7 +111,7 @@ class AuthCustomerController extends Controller
         $meja->request = 'request';
         $meja->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Permintaan Terkirim');
     }
 
     public function logout(Request $request): RedirectResponse

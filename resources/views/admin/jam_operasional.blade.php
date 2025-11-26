@@ -8,6 +8,10 @@
         <div class="container-w2">
 
             <div class="">
+
+                <h3>Sisa Waktu Kerja</h3>
+                <h2 class="mt10 w-max" id="countdown"></h2>
+
                 <h3 class="element-title">Jam Operasional</h3>
 
 
@@ -71,5 +75,31 @@
 
     </div>
     </div>
+
+    <script>
+        const jamTutup = "{{ $now->jam_tutup }}";
+
+        setInterval(() => {
+            const now = new Date();
+            const [h, m] = jamTutup.split(':');
+            const end = new Date();
+            end.setHours(h, m, 0, 0);
+
+            let diff = end - now;
+
+            // kalau sudah tutup
+            if (diff <= 0) {
+                document.getElementById("countdown").innerText = "Sudah tutup";
+                return;
+            }
+
+            const jam = Math.floor(diff / (1000 * 60 * 60));
+            const menit = Math.floor(diff / (1000 * 60)) % 60;
+            const detik = Math.floor(diff / 1000) % 60;
+
+            document.getElementById("countdown").innerHTML =
+                `<i class="ri-time-line"></i> ${jam} jam ${menit} menit ${detik} detik`;
+        }, 1000);
+    </script>
 
 @endsection

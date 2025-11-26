@@ -36,6 +36,13 @@
                         <div class="text-medium">transaksi</div>
                     </div>
                 </div>
+                <div class="long-box">
+                    <h5 class="box-title">Total Transaksi ditangani oleh {{ Auth::user()?->name }}</h5>
+                    <div class="flex align-bottom gap10">
+                        <h2 class="text-bold">{{ $allTransaksi }}</h2>
+                        <div class="text-medium">transaksi</div>
+                    </div>
+                </div>
             </div>
 
         </div>

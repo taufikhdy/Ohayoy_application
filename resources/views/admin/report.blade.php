@@ -48,11 +48,10 @@
                     <div class="box-s">
                         <h5 class="box-title">Sisa Waktu Kerja</h5>
                         <div class="flex align-bottom gap10">
-                            <div class="text-large text-bold">14j</div>
-                            <div class="text-medium">1m</div>
+                            <div class="text-medium text-bold" id="countdown"></div>
                         </div>
                     </div>
-                    <div class="box-s">
+                    {{-- <div class="box-s">
                         <h5 class="box-title">Meja Aktif</h5>
                         <div class="flex align-bottom gap10">
                             <div class="text-large text-bold">13</div>
@@ -72,7 +71,7 @@
                             <div class="text-large text-bold">14j</div>
                             <div class="text-medium">1m</div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -81,8 +80,8 @@
                 <ul class="list">
                     @foreach ($terlaris as $t)
                         <li class="list-item">
-                            <div class="name">{{$t->nama_menu}}</div>
-                            <div class="order">{{$t->penjualan}} Terjual</div>
+                            <div class="name">{{ $t->nama_menu }}</div>
+                            <div class="order">{{ $t->penjualan }} Terjual</div>
                         </li>
                     @endforeach
                 </ul>
@@ -110,8 +109,10 @@
                         $('#meja').text(data.meja);
                         $('#transaksi').text(data.transaksi);
                         $('#pemasukan').text("Rp. " + Number(data.pemasukan).toLocaleString('id-ID'));
-                        $('#pemasukan_bulanan').text("Rp. " + Number(data.pemasukan_bulanan).toLocaleString('id-ID'));
-                        $('#pemasukan_tahunan').text("Rp. " + Number(data.pemasukan_tahunan).toLocaleString('id-ID'));
+                        $('#pemasukan_bulanan').text("Rp. " + Number(data.pemasukan_bulanan)
+                            .toLocaleString('id-ID'));
+                        $('#pemasukan_tahunan').text("Rp. " + Number(data.pemasukan_tahunan)
+                            .toLocaleString('id-ID'));
                     },
                     error: function(xhr) {
                         alert("Gagal memuat report");
@@ -155,12 +156,38 @@
                     y: {
                         beginAtZero: true,
                         ticks: {
-                             callback: value => 'Rp ' + value.toLocaleString()
+                            callback: value => 'Rp ' + value.toLocaleString()
                         }
                     },
                 },
             },
         });
+    </script>
+
+    <script>
+        const jamTutup = "{{ $jam->jam_tutup }}"; // contoh "17:00"
+
+        setInterval(() => {
+            const now = new Date();
+            const [h, m] = jamTutup.split(':');
+            const end = new Date();
+            end.setHours(h, m, 0, 0);
+
+            let diff = end - now;
+
+            // kalau sudah tutup
+            if (diff <= 0) {
+                document.getElementById("countdown").innerText = "Sudah tutup";
+                return;
+            }
+
+            const jam = Math.floor(diff / (1000 * 60 * 60));
+            const menit = Math.floor(diff / (1000 * 60)) % 60;
+            const detik = Math.floor(diff / 1000) % 60;
+
+            document.getElementById("countdown").innerHTML =
+                `${jam} jam<br>${menit} menit<br>${detik} detik`;
+        }, 1000);
     </script>
 
 @endsection

@@ -99,7 +99,7 @@
                                     <td>url kosong</td>
                                     <td>qr code kosong ( tidak ada url )</td>
                                 @else
-                                    <td><a href="{{ $data['url'] }}" class="link">{{ $data['url'] }}</a></td>
+                                    <td><a href="{{ $data['url'] }}" class="link w-50 text-wrap">{{ $data['url'] }}</a></td>
                                     <td>{{ $data['qr'] }}</td>
                                 @endif
 

@@ -82,7 +82,9 @@ class AdminController extends Controller
             $totals[] = $total;
         }
 
-        return view('admin.report', compact('terlaris', 'totals', 'bulans', 'tahun'));
+        $jam = Jam::where('hari', now()->format('l'))->first();
+
+        return view('admin.report', compact('terlaris', 'totals', 'bulans', 'tahun', 'jam'));
     }
 
     public function reportData()
@@ -625,8 +627,9 @@ class AdminController extends Controller
         $this->admin();
 
         $jams = Jam::all();
+        $now = Jam::where('hari', now()->format('l'))->first();
 
-        return view('admin.jam_operasional', compact('jams'));
+        return view('admin.jam_operasional', compact('jams', 'now'));
     }
 
     public function editJam(Request $request)
@@ -861,6 +864,7 @@ class AdminController extends Controller
 
     public function databaseTransaksiQuery()
     {
+        $this->admin();
         $query = request()->query('query');
 
         $transaksi = Transaksi::where('no_struk', 'like', $query . '%')->latest()->paginate(20);

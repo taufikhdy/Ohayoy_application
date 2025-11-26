@@ -102,7 +102,8 @@ class KasirController extends Controller
     {
         $this->kasir();
         $request->validate([
-            'meja_id' => 'required|exists:meja,id'
+            'meja_id' => 'required|exists:meja,id',
+            'uang' => 'required'
         ]);
 
         $mejaId = $request->meja_id;
@@ -133,12 +134,14 @@ class KasirController extends Controller
 
             $transaksi->no_struk = 'STRK-' . date('Ymd') . '-' . $transaksi->id;
             $transaksi->save();
+
+            $uang = $request->uang;
         }
 
-        return redirect()->route('kasir.struk', $mejaId);
+        return redirect()->route('kasir.struk', [$mejaId, $uang]);
     }
 
-    public function struk($mejaId)
+    public function struk($mejaId, $uang)
     {
         $this->kasir();
 
@@ -148,7 +151,13 @@ class KasirController extends Controller
 
         $toko = Toko::latest()->first();
 
-        return view('kasir.struk', compact('transaksi', 'order_item', 'toko'));
+        $kembalian = 0;
+
+        if($uang > $transaksi->total_bayar){
+            $kembalian = $uang - $transaksi->total_bayar;
+        }
+
+        return view('kasir.struk', compact('transaksi', 'order_item', 'toko', 'kembalian'));
     }
 
     public function resetOrder(Request $request)
@@ -195,7 +204,7 @@ class KasirController extends Controller
 
         $menus = Menu::where('nama_menu', 'like', '%' . $query . '%')->latest()->paginate(20);
 
-        if(!$query){
+        if (!$query) {
             $menus = Menu::latest()->paginate(20);
         }
 
@@ -226,7 +235,8 @@ class KasirController extends Controller
         $id = Auth::user()->id;
         $kasir = User::findOrFail($id);
         $transaksi = Transaksi::where('kasir_id', $kasir->id)->whereDate('created_at', today())->count();
-        return view('kasir.pengguna', compact('kasir', 'transaksi'));
+        $allTransaksi = Transaksi::where('kasir_id', $kasir->id)->count();
+        return view('kasir.pengguna', compact('kasir', 'transaksi', 'allTransaksi'));
     }
 
 
@@ -248,6 +258,17 @@ class KasirController extends Controller
         ]);
 
         $meja = Meja::findOrFail($request->meja_id);
+
+        // if (Auth::guard('meja')->id() == $meja->id) {
+        //     Auth::guard('meja')->logout();
+        //     $request->session()->invalidate();
+        //     $request->session()->regenerateToken();
+
+        //     // Session::forget('customer_login_' . $meja->id);
+        //     // atau kalau pakai guard
+        //     // Auth::logoutOtherDevices($meja->password);
+        //     // Auth::logout();
+        // }
 
         $meja->update([
             'username' => null,

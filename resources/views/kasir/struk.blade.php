@@ -61,9 +61,18 @@
                                 <td class="border-top subtotal text-right">
                                     {{ 'Rp. ' . number_format($transaksi->total_bayar, 0, ',', '.') }}</td>
                             </tr>
+
+                            <tr>
+                                <td colspan="2" class="border-top subtotal">
+                                    <h4>Kembalian</h4>
+                                </td>
+                                <td class="border-top subtotal text-right">
+                                    <h4>{{ 'Rp. ' . number_format($kembalian, 0, ',', '.') }}</h4>
+                                </td>
+                            </tr>
                         </table>
                     </div>
-                    <p>{{ $toko->ucapan }}</p>
+                    <h3 class="text-center">{{ $toko->ucapan }}</h3>
                     <div class="form">
                         <form action="{{ route('kasir.resetOrder') }}" method="post">
                             @csrf

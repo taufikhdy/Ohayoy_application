@@ -206,7 +206,10 @@
                         <form action="/kasir/pesanan/konfirmasiPelangganSelesai" method="post">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="meja_id" value="${meja_id}">
-                            <button type="submit" class="btn-primary">Konfirmasi Pembayaran</button>
+                            <div class="flex gap10">
+                            <input type="number" name="uang" placeholder="Bayar Tunai" required>
+                            <button type="submit" class="btn-primary">Konfirmasi pembayaran</button>
+                            </div>
                         </form>
                     </div>
                 </div>`;

@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Middleware\CheckMejaStatus;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -114,7 +115,7 @@ Route::controller(KasirController::class)->group(function () {
     route::post('/kasir/pesanan/konfirmasiPelangganSelesai', 'pelangganSelesai')->name('kasir.pelangganSelesai');
 
     route::get('/kasir/transaksi', 'transaksi')->name('kasir.transaksi');
-    route::get('/kasir/transaksi/struk/{mejaId}', 'struk')->name('kasir.struk');
+    route::get('/kasir/transaksi/struk/{mejaId}/{uang}', 'struk')->name('kasir.struk');
     route::post('/kasir/transaksi/resetOrder', 'resetOrder')->name('kasir.resetOrder');
 
     route::get('/kasir/menu', 'menu')->name('kasir.menu');

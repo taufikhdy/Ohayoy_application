@@ -12,6 +12,7 @@
                 </a>
 
                 <form action="{{ route('admin.databaseTransaksiQuery') }}" method="get">
+                    @csrf
                     <div class="flex flex-between gap10">
                         <input type="text" name="query" id="" placeholder="Cari nomor struk" class="w-100"
                             value="{{ $query }}">

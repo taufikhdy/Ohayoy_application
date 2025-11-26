@@ -30,13 +30,13 @@ return [
 
         'main' => [
             'salt' => env('HASHIDS_SALT', 'main-salt'),
-            'length' => 10,
+            'length' => 101,
             'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         ],
 
         'meja' => [
             'salt' => env('HASHIDS_SALT_MEJA', 'meja-secret'),
-            'length' => 10,
+            'length' => 101,
             'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         ],
 
